@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tambo Adventure Travel - Spécialiste du safari sur mesure et des expériences uniques en Afrique du Sud.">
+    <title>TATBooker | Tambo Adventure Travel - Safari & Expériences</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/glassmorphism.css">
+    <link rel="stylesheet" href="./css/palettes.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+    <link rel="icon" type="image/png" href="logo tat coloured.png">
+</head>
+<body>
+
+<!-- particules sahariennes -->
+<div id="particles-container"></div>
+
+<div class="app-container">
+    <!-- Glass navigation -->
+    <nav class="glass-nav">
+        <div class="logo-area">
+            <img src="logo tat coloured.png" alt="Logo Tambo Adventure Travel" class="logo-img" width="50" height="50">
+            <h1>TAMBO ADVENTURE TRAVEL</h1>
+            <p>Élégance sauvage · Expériences uniques</p>
+        </div>
+        <div class="nav-links">
+        </div>
+    </nav>
+
+    <!-- Hero section blend Glassmorphism + couleurs terre -->
+    <div class="hero-section">
+        <div class="glass-card card-welcome">
+            <div class="welcome-badge"><i class="fas fa-leaf"></i> <span>Éco-Responsable</span></div>
+            <h2>Qui sommes-nous? <span class="highlight">Des passionnés de voyages</span><br>...</h2>
+            <p class="hero-description">Tambo Adventure Travel c'est une famille passionnée de voyages, concernée par l'afrique du sud, voulant partager ses expériences avec l'éxigeance, les respect des us et coutumes et une envie forte de peser pour le meilleur de tous.</p>
+            <div class="hero-badges-area">
+                <i class="fas fa-cloud-moon icon-sun"></i>
+                <i class="fas fa-mountain-sun icon-mountain"></i>
+            </div>
+        </div>
+
+        <div class="glass-card card-stats">
+            <div class="stat-numbers">+158 <span class="stat-unit">Partenaires</span></div>
+            <div class="stat-numbers">2.4k <span class="stat-unit">Tours organisés</span></div>
+            <hr>
+            <div class="stat-location"><i class="fas fa-map-marker-alt icon-marker"></i> <span>Bush, Déserts, Lagons</span></div>
+            <div class="stat-footer"><span class="stat-tag">🌍 Baobab · Acacia · Terre cuite</span></div>
+        </div>
+    </div>
+
+    <!-- Destinations / inspiration Afrique -->
+    <div class="section-title">
+        <i class="fas fa-tree icon-title"></i> Horizons Sauvages
+    </div>
+    <div class="destinations-grid" id="destinationsGrid">
+        <!-- cartes via js -->
+    </div>
+
+    <!-- Formulaire de contact Glassmorphism -->
+    <div class="section-title">
+        <i class="fas fa-paper-plane icon-title"></i> Contactez nous
+    </div>
+    <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
+        <form id="contactForm">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="contact-name" class="field-label">Nom complet</label>
+                    <input type="text" id="contact-name" class="field-value" placeholder="Votre nom...">
+                </div>
+                <div class="field">
+                    <label for="contact-email" class="field-label">Email</label>
+                    <input type="email" id="contact-email" class="field-value" placeholder="votre@email.com">
+                </div>
+                <div class="field full-width">
+                    <label for="contact-phone" class="field-label">Téléphone</label>
+                    <div style="display: flex; width: 100%; gap: 8px;">
+                        <select id="contact-country-prefix" class="field-value country-prefix">
+                            <option value="+33" selected>🇫🇷 +33</option>
+                            <option value="+27">🇿🇦 +27</option>
+                            <option value="+254">🇰🇪 +254</option>
+                            <option value="+255">🇹🇿 +255</option>
+                            <option value="+263">🇿🇼 +263</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+228">🇹🇬 +228</option>
+                            <option value="+241">🇬🇦 +241</option>
+                            <option value="+243">🇨🇩 +243</option>
+                            <option value="+242">🇨🇬 +242</option>
+                            <option value="+257">🇧🇮 +257</option>
+                            <option value="+250">🇷🇼 +250</option>
+                            <option value="+229">🇧🇯 +229</option>
+                            <option value="+226">🇧🇫 +226</option>
+                            <option value="+223">🇲🇱 +223</option>
+                            <option value="+221">🇸🇳 +221</option>
+                            <option value="+225">🇨🇮 +225</option>
+                            <option value="+212">🇲🇦 +212</option>
+                            <option value="+222">🇲🇷 +222</option>
+                            <option value="+213">🇩🇿 +213</option>
+                            <option value="+216">🇹🇳 +216</option>
+                            <option value="+971">🇦🇪 +971</option>
+                            <option value="+974">🇶🇦 +974</option>
+                            <option value="+20">🇪🇬 +20</option>
+                            <option value="+32">🇧🇪 +32</option>
+                            <option value="+31">🇳🇱 +31</option>
+                            <option value="+49">🇩🇪 +49</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+39">🇮🇹 +39</option>
+                            <option value="+352">🇱🇺 +352</option>
+                            <option value="+41">🇨🇭 +41</option>
+                            <option value="+45">🇩🇰 +45</option>
+                            <option value="+46">🇸🇪 +46</option>
+                            <option value="+47">🇳🇴 +47</option>
+                            <option value="+48">🇵🇱 +48</option>
+                            <option value="+351">🇵🇹 +351</option>
+                        </select>
+                        <input type="tel" id="contact-phone" class="field-value" style="flex: 1;" placeholder="6 12 ...">
+                    </div>
+                </div>
+                <div class="field full-width" style="position: relative;">
+                    <label for="contact-date" class="field-label">Dates de voyage</label>
+                    <div style="display: flex; width: 100%; gap: 8px;">
+                        <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                            <i id="calendar-icon-trigger" class="fas fa-calendar-alt" style="position: absolute; left: 12px; color: #F1BF73; font-size: 0.9rem; cursor: pointer; z-index: 10;"></i>
+                            <input type="text" id="contact-date" class="field-value date-input-padding" placeholder="du JJ/MM/AAAA au JJ/MM/AAAA" readonly>
+                        </div>
+                        <select id="contact-date-format" class="field-value date-format">
+                            <option value="fr-FR">FR</option>
+                            <option value="en-GB">UK</option>
+                            <option value="en-US">US</option>
+                        </select>
+                    </div>
+                    <span class="glass-tooltip" style="bottom: -25px;">Veuillez sélectionner votre date de départ prévue</span>
+                </div>
+            </div>
+            <div class="field" style="margin-bottom: 1.5rem;">
+                <label for="contact-msg" class="field-label">Votre message</label>
+                <textarea id="contact-msg" class="field-value" style="min-height: 120px; resize: vertical;" placeholder="Décrivez votre projet de safari..."></textarea>
+            </div>
+            <div class="form-footer">
+                <button type="submit" class="glass-btn">Envoyer la demande</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Form style - Adaptive Grid avec verre -->
+    <div class="form-glass">
+        <div class="partner-header">
+            <h3 class="partner-title"><i class="fas fa-building"></i>  Vous souhaitez devenir partenaire?</h3>
+            <div class="toggle-container">
+                <!-- <span class="field-label" style="font-size: 0.7rem; margin: 0; color: #FBE4BD;">OUI</span> -->
+                <label class="glass-switch">
+                    <input type="checkbox" id="edit-mode-toggle">
+                    <span class="slider"></span>
+                </label>
+                <button type="button" id="partner-reset-btn" class="glass-btn" style="padding: 0.4rem 1rem; font-size: 0.75rem; margin-left: 10px; display: none;">Réinitialiser</button>
+            </div>
+        </div>
+        <div class="form-grid partner-form-grid" id="dynamicFormGrid">
+            <!-- les champs seront générés ici (prouvant la flexibilité) -->
+        </div>
+    </div>
+
+    <!-- Témoignage glass -->
+    <div class="testimonial">
+        <i class="fas fa-quote-left" style="font-size: 2rem; color: #E3AA57;"></i>
+        <div><strong style="color:#FFE3B5;">Nomad Safari</strong> — “L'outil TATBooker unit la tradition du voyage sur mesure et la transparence high-tech. Le design est bluffant, comme un coucher de soleil sur le Ngorongoro.”  <span style="color:#C9AE80;">★★★★★</span></div>
+    </div>
+
+    <footer>
+        <img src="logorezos.png" alt="Réseaux sociaux Tambo Adventure Travel" class="footer-social" loading="lazy">
+       Tambo Adventure Travel et ses outils associés sont la propriété exclusive de Tat s.a. — 
+       <a href="cgu.html" target="_blank" class="footer-link">CGU</a> | 
+       <a href="politique-de-confidentialite.html" target="_blank" class="footer-link">Politique de Confidentialité</a>
+    </footer>
+</div>
+
+<!-- Bannière de consentement RGPD -->
+<div id="consent-banner" class="consent-banner glass-card">
+    <div class="consent-content">
+        <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant, vous acceptez notre <a href="politique-de-confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
+    </div>
+    <div class="consent-actions">
+        <button id="consent-accept" class="glass-btn">Accepter</button>
+        <button id="consent-refuse" class="glass-btn-secondary">Refuser</button>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+<script src="./js/palette-engine.js"></script>
+<script src="./js/weather-simulator.js"></script>
+<script src="./js/utils.js"></script>
+<script src="./js/lead-capture.js"></script>
+<script src="./js/consent-manager.js"></script>
+<script src="./js/main.js"></script>
+</body>
+</html>
+<script>console.log('index.html: Fin du chargement du body et des scripts.');</script>

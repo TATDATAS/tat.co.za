@@ -1,0 +1,83 @@
+/* Responsive Design - tat.co.za */
+
+/* --- Breakpoint: Desktop Small / Tablet Landscape (1024px) --- */
+@media (max-width: 1024px) {
+    .app-container {
+        padding: 1.5rem;
+    }
+    
+    .hero-section {
+        gap: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* --- Breakpoint: Tablet Portrait / Mobile Large (768px) --- */
+@media (max-width: 768px) {
+    .glass-nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        border-radius: 1.5rem;
+    }
+
+    .logo-area div {
+        width: 100%;
+        justify-content: center;
+        display: none; /* Masque le H1 et le P */
+    }
+
+    .logo-img {
+        height: 60px; /* Réduction de la taille de l'icône sur mobile */
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    .hero-section {
+        flex-direction: column;
+    }
+
+    .card-welcome, .card-stats {
+        flex: none;
+        width: 100%;
+    }
+}
+
+/* --- Breakpoint: Mobile Small (320px - 480px) --- */
+@media (max-width: 480px) {
+    .app-container {
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .destinations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field-label {
+        min-width: 100%;
+        margin-bottom: 2px;
+    }
+}

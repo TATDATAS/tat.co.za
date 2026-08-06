@@ -1,0 +1,321 @@
+## 3 configurations VS Code pour le développement HTML (site vitrine)
+
+---
+
+### Configuration 1 : Optimale (Recommandée)
+
+**Profil** : Développeur exigeant, travail quotidien, besoin de productivité maximale.
+
+#### Extensions à installer
+
+| Extension | Rôle | Pourquoi |
+|-----------|------|----------|
+| **Live Server** (ritwickdey) | Serveur local temps réel | Rafraîchissement automatique à chaque modification |
+| **Prettier** (esbenp) | Formateur de code | HTML/CSS/JS propre et cohérent |
+| **IntelliSense for CSS** (Zignd) | Autocomplétion CSS | Suggestions de classes et propriétés |
+| **CSS Peek** (pranaygp) | Navigation CSS | Voir les styles depuis HTML |
+| **Color Highlight** (naumovs) | Aperçu couleurs | Visualise les hex dans l'éditeur |
+| **HTML CSS Support** (ecmel) | Complétion HTML/CSS | Classes et IDs suggérés |
+| **JavaScript (ES6) snippets** (xabikos) | Snippets JS | Gain de temps |
+| **Path Intellisense** (christian-kohler) | Auto-complétion chemins | Images, fichiers, fonts |
+| **GitLens** (gitkraken) | Gestion version | Suivi modifications |
+| **TODO Tree** (Gruntfuggly) | Organisation tâches | Visualise les `// TODO` |
+| **Error Lens** (usernamehw) | Affichage erreurs en ligne | Détection immédiate |
+| **Image preview** (kisstkondoros) | Aperçu images | Miniatures dans l'éditeur |
+| **Live Share** (Microsoft) | Collaboration temps réel | Travail à plusieurs |
+
+#### Fichier `.vscode/settings.json`
+
+```json
+{
+    // Éditeur
+    "editor.fontSize": 14,
+    "editor.fontFamily": "JetBrains Mono, Fira Code, Consolas, monospace",
+    "editor.fontLigatures": true,
+    "editor.lineHeight": 1.6,
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    
+    // Formatage
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    
+    // Live Server
+    "liveServer.settings.root": "/",
+    "liveServer.settings.port": 5500,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "liveServer.settings.ignoreFiles": [
+        ".vscode/**",
+        "**/*.scss",
+        "**/*.sass"
+    ],
+    
+    // Préttier spécifique HTML
+    "prettier.printWidth": 100,
+    "prettier.tabWidth": 2,
+    "prettier.useTabs": false,
+    "prettier.semi": true,
+    "prettier.singleQuote": false,
+    "prettier.htmlWhitespaceSensitivity": "ignore",
+    
+    // Explorer
+    "explorer.compactFolders": false,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    
+    // Files
+    "files.autoSave": "onFocusChange",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.associations": {
+        "*.html": "html",
+        "*.css": "css",
+        "*.js": "javascript",
+        "*.json": "jsonc"
+    },
+    
+    // Emmet
+    "emmet.includeLanguages": {
+        "html": "html",
+        "css": "css"
+    },
+    "emmet.syntaxProfiles": {
+        "html": "html",
+        "css": "css"
+    },
+    
+    // Workbench
+    "workbench.colorTheme": "Dark+ (default dark)",
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.startupEditor": "none",
+    "workbench.sideBar.location": "left",
+    
+    // Terminal
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.cursorStyle": "line",
+    
+    // Extensions spécifiques
+    "color-highlight.markerType": "dot-before",
+    "todo-tree.highlights.enabled": true,
+    "todo-tree.general.tags": ["TODO", "FIXME", "BUG", "HACK"]
+}
+```
+
+#### Extensions VS Code (recommandées mais optionnelles)
+
+```json
+{
+    "recommendations": [
+        "ritwickdey.liveserver",
+        "esbenp.prettier-vscode",
+        "zignd.html-css-class-completion",
+        "naumovs.color-highlight",
+        "ecmel.vscode-html-css",
+        "christian-kohler.path-intellisense",
+        "eamodio.gitlens",
+        "Gruntfuggly.todo-tree",
+        "usernamehw.errorlens",
+        "kisstkondoros.vscode-gutter-preview",
+        "ms-vsliveshare.vsliveshare",
+        "vscode-icons-team.vscode-icons"
+    ]
+}
+```
+
+---
+
+### Configuration 2 : Moyenne (Équilibrée)
+
+**Profil** : Développeur occasionnel, machines modestes, besoin essentiel.
+
+#### Extensions minimales
+
+| Extension | Rôle |
+|-----------|------|
+| **Live Server** (ritwickdey) | Serveur local |
+| **Prettier** (esbenp) | Formatage |
+| **Color Highlight** (naumovs) | Aperçu couleurs |
+| **HTML CSS Support** (ecmel) | Complétion |
+
+#### Fichier `.vscode/settings.json`
+
+```json
+{
+    // Éditeur
+    "editor.fontSize": 13,
+    "editor.fontFamily": "Consolas, monospace",
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": false,
+    
+    // Formatage
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    
+    // Live Server
+    "liveServer.settings.root": "/",
+    "liveServer.settings.port": 5500,
+    "liveServer.settings.donotShowInfoMsg": true,
+    
+    // Préttier
+    "prettier.printWidth": 100,
+    "prettier.tabWidth": 2,
+    "prettier.semi": true,
+    
+    // Files
+    "files.autoSave": "onFocusChange",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    
+    // Emmet
+    "emmet.includeLanguages": {
+        "html": "html",
+        "css": "css"
+    },
+    
+    // Workbench
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.startupEditor": "none",
+    
+    // Terminal
+    "terminal.integrated.fontSize": 12
+}
+```
+
+---
+
+### Configuration 3 : Minimale (Essentielle)
+
+**Profil** : Débutant, machine très modeste, test rapide, édition simple.
+
+#### Extensions (1 seule)
+
+| Extension | Rôle |
+|-----------|------|
+| **Live Server** (ritwickdey) | Serveur local avec rafraîchissement auto |
+
+#### Fichier `.vscode/settings.json`
+
+```json
+{
+    // Éditeur
+    "editor.fontSize": 13,
+    "editor.fontFamily": "Consolas, monospace",
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": false,
+    
+    // Formatage (sans Prettier)
+    "editor.formatOnSave": false,
+    
+    // Live Server uniquement
+    "liveServer.settings.root": "/",
+    "liveServer.settings.port": 5500,
+    "liveServer.settings.donotShowInfoMsg": true,
+    
+    // Files
+    "files.autoSave": "onFocusChange",
+    
+    // Emmet (intégré nativement)
+    "emmet.includeLanguages": {
+        "html": "html"
+    },
+    
+    // Workbench
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.startupEditor": "none",
+    
+    // Terminal
+    "terminal.integrated.fontSize": 12
+}
+```
+
+#### Pas d'extensions du tout (option ultra-minimale)
+
+Tu peux travailler **sans aucune extension** et utiliser :
+- **Rafraîchissement manuel** : `Ctrl + F5` dans le navigateur
+- **Formatage manuel** : à la main
+- **Complétion** : intégrée basique de VS Code
+
+---
+
+### Tableau récapitulatif
+
+| Critère | Optimale | Moyenne | Minimale |
+|---------|----------|---------|----------|
+| **Extensions** | 10-15 | 3-5 | 0-1 |
+| **Formatage auto** | ✅ | ✅ | ❌ |
+| **Live Server** | ✅ | ✅ | ✅ |
+| **Aperçu couleurs** | ✅ | ✅ | ❌ |
+| **Complétion HTML/CSS** | ✅ | ✅ | ❌ |
+| **RAM estimée** | ~500 Mo | ~250 Mo | ~120 Mo |
+| **Installation** | 10-15 min | 3-5 min | 1 min |
+
+---
+
+### Installation rapide (pour chaque config)
+
+#### Optimale
+```bash
+code --install-extension ritwickdey.liveserver
+code --install-extension esbenp.prettier-vscode
+code --install-extension zignd.html-css-class-completion
+code --install-extension naumovs.color-highlight
+code --install-extension ecmel.vscode-html-css
+code --install-extension christian-kohler.path-intellisense
+code --install-extension eamodio.gitlens
+code --install-extension Gruntfuggly.todo-tree
+code --install-extension usernamehw.errorlens
+code --install-extension kisstkondoros.vscode-gutter-preview
+```
+
+#### Moyenne
+```bash
+code --install-extension ritwickdey.liveserver
+code --install-extension esbenp.prettier-vscode
+code --install-extension naumovs.color-highlight
+code --install-extension ecmel.vscode-html-css
+```
+
+#### Minimale
+```bash
+code --install-extension ritwickdey.liveserver
+```
+
+---
+
+### Démarrer un projet avec Live Server
+
+1. Créer un dossier `TATBooker-Website`
+2. Ouvrir dans VS Code (`File > Open Folder`)
+3. Créer `index.html`
+4. Clic droit sur `index.html` → `Open with Live Server`
+5. Le navigateur s'ouvre automatiquement sur `http://localhost:5500`
+
+Chaque modification dans le code → rafraîchissement automatique du navigateur.

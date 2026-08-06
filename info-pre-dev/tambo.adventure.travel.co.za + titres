@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<!-- ============================================================ -->
+    <!-- SECTION 1 : MÉTA-DONNÉES ET CONFIGURATION                    -->
+    <!-- ============================================================ -->
+    <!-- À MODIFIER :                                                 -->
+    <!-- - charset, viewport (généralement ok)                        -->
+    <!-- - title : changer le nom de l'onglet                         -->
+    <!-- ============================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>TATBooker | Safari Glassmorphism</title> <!-- ← MODIFIER ICI : titre onglet -->
+	<!-- ============================================================ -->
+    <!-- SECTION 2 : POLICES ET BIBLIOTHÈQUES EXTERNES                -->
+    <!-- ============================================================ -->
+    <!-- À MODIFIER :                                                 -->
+    <!-- - Changer la police Google Fonts si besoin                   -->
+    <!-- - Remplacer Font Awesome par autre icônes                    -->
+    <!-- ============================================================ -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- ============================================================ -->
+    <!-- SECTION 3 : STYLES CSS (TOUTE LA DÉCO)                       -->
+    <!-- ============================================================ -->
+    <!-- À MODIFIER :                                                 -->
+    <!-- - Lignes 27-31 : Dégradé de fond (couleurs terre)            -->
+    <!-- - Lignes 50-54 : Couleur des particules                      -->
+    <!-- - Lignes 100-140 : Navigation glass                          -->
+    <!-- - Lignes 143-190 : Cartes glassmorphism                      -->
+    <!-- - Lignes 220-260 : Formulaire adaptatif                      -->
+    <!-- - Lignes 300-320 : Footer                                    -->
+    <!-- ============================================================ -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #C29A6B 0%, #A67B4A 25%, #7A5C3A 50%, #4A6B3C 75%, #2D4A2A 100%);
+            /* Terrain d'Afrique : ocre -> sable -> brun terre -> vert savane profond */
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Overlay grain subtil pour texture naturelle */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path d="M70 40 L90 20 L110 40 L130 30 L120 50 L140 70 L110 80 L90 70 L70 80 L40 70 L60 50 L50 30 Z" fill="white"/><circle cx="150" cy="140" r="12" fill="white"/><circle cx="40" cy="160" r="8" fill="white"/><path d="M160 80 L180 70 L190 90 L170 100 Z" fill="white"/><circle cx="30" cy="50" r="5" fill="white"/></svg>');
+            background-repeat: repeat;
+            pointer-events: none;
+        }
+
+        /* PARTICULES ANIMÉES (savane poussière / lucioles) */
+        .particle {
+            position: fixed;
+            background: rgba(255, 235, 190, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(2px);
+            animation: floatUp 12s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) translateX(40px) scale(1.2); opacity: 0; }
+        }
+
+        /* layout principal */
+        .app-container {
+            position: relative;
+            z-index: 5;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem;
+        }
+
+        /* BARRE DE NAVIGATION GLASS */
+        .glass-nav {
+            background: rgba(255, 248, 235, 0.2);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 2rem;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(255, 245, 225, 0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-area h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF2DF, #FFD89A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .logo-area p {
+            font-size: 0.7rem;
+            color: rgba(255,245,220,0.9);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: #FEF3E2;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            border-bottom: 1px solid transparent;
+        }
+        .nav-links a:hover {
+            border-bottom-color: #FBBA6C;
+            color: #FFE3B5;
+        }
+
+        /* GRILLE DE CARTES GLASS + AFRIQUE */
+        .hero-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .glass-card {
+            background: rgba(22, 20, 18, 0.25);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 220, 150, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s ease, box-shadow 0.3s;
+            padding: 1.8rem;
+        }
+        .glass-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 205, 100, 0.7);
+            background: rgba(40, 35, 28, 0.35);
+        }
+
+        .card-welcome {
+            flex: 1.4;
+        }
+        .card-stats {
+            flex: 1;
+        }
+
+        .welcome-badge {
+            background: rgba(235, 185, 95, 0.3);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #FFE2B5;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #FFF5E6;
+            margin-bottom: 0.8rem;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #F5B041, #E69A2E);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .stat-numbers {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #FFD89A;
+            margin-bottom: 0.2rem;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border-color: rgba(255,215,150,0.3);
+        }
+
+        /* SECTION DESTINATIONS - GLASS GRID */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #FFF4E0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .destination-card {
+            background: rgba(20, 18, 16, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(240, 180, 80, 0.4);
+            transition: all 0.3s;
+        }
+        .destination-img {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .destination-img::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+        }
+        .dest-content {
+            padding: 1rem 1.2rem 1.3rem;
+        }
+        .dest-content h3 {
+            color: #FCE2B4;
+            font-weight: 600;
+        }
+        .dest-content p {
+            color: #EBD9C0;
+            font-size: 0.8rem;
+            margin: 0.4rem 0;
+        }
+
+        /* FORMULAIRE ADAPTATIF STYLE "ADAPTIVE GRID" (fusion avec glass) */
+        .form-glass {
+            background: rgba(15, 15, 12, 0.3);
+            backdrop-filter: blur(16px);
+            border-radius: 2rem;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255,200,100,0.35);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.8rem 1.5rem;
+        }
+        .field {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .field-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #FFE3B5;
+            text-transform: uppercase;
+            min-width: 85px;
+        }
+        .field-value {
+            background: rgba(255, 245, 225, 0.1);
+            border: none;
+            border-bottom: 1px solid rgba(240, 180, 80, 0.5);
+            color: #FFF;
+            font-family: 'Inter', monospace;
+            font-size: 0.85rem;
+            padding: 0.3rem 0;
+            flex: 1;
+            outline: none;
+            transition: 0.2s;
+        }
+        .field-value:focus {
+            border-bottom-color: #F5A623;
+            background: rgba(0,0,0,0.3);
+        }
+
+        button {
+            background: rgba(230, 150, 50, 0.85);
+            backdrop-filter: blur(8px);
+            border: none;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 2rem;
+            color: #2C2A24;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            background: #E69A2E;
+            transform: scale(1.02);
+            color: #1f1c16;
+        }
+
+        /* Témoignage glass + note */
+        .testimonial {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.2rem 1.8rem;
+            border-left: 6px solid #E9A23B;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #DBCBAA;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(8px);
+            padding: 1rem;
+            border-radius: 3rem;
+        }
+
+        @media (max-width: 780px) {
+            .app-container { padding: 1rem; }
+            .glass-nav { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .hero-section { flex-direction: column; }
+            h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SECTION 4 : PARTICULES (GÉNÉRATION JS)                       -->
+<!-- ============================================================ -->
+<!-- À MODIFIER :                                                 -->
+<!-- - Nombre de particules (ligne ~430 dans script)              -->
+<!-- - Taille, couleur, animation                                 -->
+<!-- ============================================================ -->
+<!-- particules sahariennes -->
+<div id="particles-container"></div>
+
+<!-- ============================================================ -->
+<!-- SECTION 5 : STRUCTURE HTML PRINCIPALE                        -->
+<!-- ============================================================ -->
+<div class="app-container">
+    <!-- ======================================================== -->
+    <!-- SECTION 5.1 : BARRE DE NAVIGATION                        -->
+    <!-- ======================================================== -->
+    <!-- À MODIFIER :                                             -->
+    <!-- - Texte du logo (ligne ci-dessous)                       -->
+    <!-- - Liens du menu (dashboard, partenaires, etc.)           -->
+    <!-- ======================================================== -->
+    <nav class="glass-nav">
+        <div class="logo-area">
+            <h1>𓃀 TATBooker Africa</h1>					<!-- ← MODIFIER ICI : nom du site -->
+            <p>Élégance sauvage · Gestion d'expériences</p> <!-- ← MODIFIER ICI : slogan -->
+        </div>
+        <div class="nav-links">
+            <a href="#">Dashboard</a>	<!-- ← MODIFIER ICI : lien -->
+            <a href="#">Partenaires</a>	<!-- ← MODIFIER ICI : lien -->
+            <a href="#">Tours</a>		<!-- ← MODIFIER ICI : lien -->
+            <a href="#">Calendrier</a>	<!-- ← MODIFIER ICI : lien -->
+            <a href="#">Rapports</a>	<!-- ← MODIFIER ICI : lien -->
+        </div>
+    </nav>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 5.2 : SECTION HERO (CARTES PRINCIPALES)          -->
+    <!-- ======================================================== -->
+    <!-- À MODIFIER :                                             -->
+    <!-- - Texte de bienvenue                                     -->
+    <!-- - Chiffres stats (partenaires, tours)                    -->
+    <!-- - Badges et icônes                                       -->
+    <!-- ======================================================== -->
+    <div class="hero-section">
+		<!-- Carte gauche : message de bienvenue -->
+        <div class="glass-card card-welcome"> 				<!-- ← MODIFIER ICI : badge -->
+            <div class="welcome-badge"><i class="fas fa-leaf"></i>   TERRE D'AFRIQUE & INNOVATION</div>
+            <h2>Vitrine <span class="highlight">Glassmorphism</span><br>Rencontre avec la Savane</h2> <!-- ← MODIFIER ICI : titre -->
+            <p style="color:#EFE3D0; line-height:1.4;">Une interface transparente, des reflets de sable ocre et acacia. L'héritage africain fusionné avec le design contemporain Apple. Cartes floutées, profondeur, élégance brute.</p> <!-- ← MODIFIER ICI : description -->
+            <div style="margin-top: 1.2rem;">
+                <i class="fas fa-cloud-moon" style="color:#FFCF8A; margin-right: 10px;"></i>
+                <i class="fas fa-mountain-sun" style="color:#F3B543;"></i>
+            </div>
+        </div>
+
+		<!-- Carte droite : statistiques -->
+        <div class="glass-card card-stats">
+            <div class="stat-numbers">+158 <span style="font-size: 0.9rem;">Partenaires</span></div> 		<!-- ← MODIFIER ICI : nombre -->
+            <div class="stat-numbers">2.4k <span style="font-size: 0.9rem;">Tours organisés</span></div>	<!-- ← MODIFIER ICI : nombre -->
+            <hr>
+            <div><i class="fas fa-map-marker-alt" style="color:#ECAE54;"></i>  <span style="color:#F9E2B0;">Savanes, Déserts, Lagons</span></div> 	<!-- ← MODIFIER ICI : texte -->
+            <div style="margin-top: 1rem;"><span style="background:rgba(240,180,70,0.3); padding:0.2rem 0.7rem; border-radius: 20px;">🌍 Baobab · Acacia · Terre cuite</span></div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 5.3 : FORMULAIRE ADAPTATIF (FICHE ENTREPRISE)    -->
+    <!-- ======================================================== -->
+    <!-- À MODIFIER :                                             -->
+    <!-- - Le contenu du formulaire est généré par JavaScript     -->
+    <!-- - Voir SECTION 7 : const fields (lignes 450-465)         -->
+    <!-- ======================================================== -->
+    <div class="form-glass">
+        <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap:wrap; margin-bottom: 1rem;">
+            <h3 style="color:#FBE4BD; font-weight: 500;"><i class="fas fa-building"></i>  Fiche entreprise (style densifié)</h3>
+            <button id="editBtn" class="glass-btn">✏️ Modifier</button>
+        </div>
+        <div class="form-grid" id="dynamicFormGrid">
+            <!-- Les champs sont injectés ici par JavaScript -->
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 5.4 : GRILLE DES DESTINATIONS                    -->
+    <!-- ======================================================== -->
+    <!-- À MODIFIER :                                             -->
+    <!-- - Le contenu est généré par JavaScript                   -->
+    <!-- - Voir SECTION 8 : const destinations (lignes 485-495)   -->
+    <!-- ======================================================== -->
+    <div class="section-title">
+        <i class="fas fa-tree" style="color:#F1BF73;"></i>   Horizons Sauvages
+    </div>
+    <div class="destinations-grid" id="destinationsGrid">
+        <!-- cartes via js -->
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 5.5 : TÉMOIGNAGE                                 -->
+    <!-- ======================================================== -->
+    <!-- À MODIFIER :                                             -->
+    <!-- - Nom du client                                          -->
+    <!-- - Texte du témoignage                                    -->
+    <!-- - Note (étoiles)                                         -->
+    <!-- ======================================================== -->
+    <div class="testimonial">
+        <i class="fas fa-quote-left" style="font-size: 2rem; color: #E3AA57;"></i>
+        <div><strong style="color:#FFE3B5;">Nomad Safari</strong> — “L'outil TATBooker unit la tradition du voyage sur mesure et la transparence high-tech. Le design est bluffant, comme un coucher de soleil sur le Ngorongoro.”  <span style="color:#C9AE80;">★★★★★</span></div> 	<!-- ← MODIFIER ICI : témoignage etnbre d'étoiles -->
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 5.6 : FOOTER                                     -->
+    <!-- ======================================================== -->
+    <!-- À MODIFIER : texte de copyright / marque                 -->
+    <!-- ======================================================== -->
+    <footer>
+        🧡 TATBooker — Inspiration savane / Glassmorphism | pure HTML/CSS | Référence "Apple meets Africa"
+    </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6 : JAVASCRIPT DE BASE (PARTICULES)                  -->
+<!-- ============================================================ -->
+<script>
+    // Générer des particules terreuses / poussière dorée
+    function createParticles() {
+        const container = document.getElementById('particles-container');
+        for (let i = 0; i < 45; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 8 + 4;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDelay = `${Math.random() * 15}s`;
+            particle.style.animationDuration = `${8 + Math.random() * 12}s`;
+            particle.style.background = `rgba(235, 185, 95, ${Math.random() * 0.5 + 0.2})`;
+            container.appendChild(particle);
+        }
+    }
+    createParticles();
+</script>
+
+<!-- ============================================================ -->
+<!-- SECTION 7 : FORMULAIRE ADAPTATIF (DONNÉES À MODIFIER)        -->
+<!-- ============================================================ -->
+<!-- À MODIFIER : TOUS LES CHAMPS DU FORMULAIRE ICI               -->
+<!-- Structure: { label: "Nom affiché", value: "Valeur par défaut", type: "text" } -->
+<!-- ============================================================ -->
+<script>
+	// == DONNÉES DU FORMULAIRE - MODIFIER ICI ===
+    const fields = [
+        { label: "Raison sociale", value: "TERRES D'AFRIQUE SAFARIS", type: "text" },
+        { label: "TVA intracom", value: "FR43987654321", type: "text" },
+        { label: "SIRET", value: "892 345 678 00023", type: "text" },
+        { label: "Email", value: "contact@safari-gm.com", type: "email" },
+        { label: "Téléphone", value: "+221 78 123 45 67", type: "tel" },
+        { label: "Adresse", value: "Quartier des Almadies, Dakar", type: "text" },
+        { label: "Code postal", value: "10500", type: "text" },
+        { label: "Ville", value: "Dakar", type: "text" },
+        { label: "Pays", value: "Sénégal", type: "text" },
+        { label: "Devise", value: "XOF / EUR", type: "text" },
+        { label: "Taux TVA", value: "18%", type: "text" },
+        { label: "Seg.", value: "Premium Partenaire", type: "text" }
+    ];
+
+	// Ne pas modifier cette fonction (construction automatique)
+    function buildForm() {
+        const container = document.getElementById('dynamicFormGrid');
+        container.innerHTML = '';
+        fields.forEach(f => {
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'field';
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'field-label';
+            labelSpan.innerText = f.label + ' :';
+            const inputEl = document.createElement('input');
+            inputEl.type = f.type === 'email' ? 'email' : (f.type === 'tel' ? 'tel' : 'text');
+            inputEl.className = 'field-value';
+            inputEl.value = f.value;
+            inputEl.readOnly = true;
+            fieldDiv.appendChild(labelSpan);
+            fieldDiv.appendChild(inputEl);
+            container.appendChild(fieldDiv);
+        });
+        window.allInputs = document.querySelectorAll('#dynamicFormGrid .field-value');
+    }
+
+    buildForm();
+</script>
+
+<!-- ============================================================ -->
+<!-- SECTION 8 : DESTINATIONS (DONNÉES À MODIFIER)                -->
+<!-- ============================================================ -->
+<!-- À MODIFIER : TOUTES LES CARTES DESTINATIONS ICI              -->
+<!-- Structure: name, desc, img (URL image)                      -->
+<!-- ============================================================ -->
+<script>
+    // === DONNÉES DES DESTINATIONS - MODIFIER ICI ===
+    // Mode édition / readonly (toggle)
+    let editMode = false;
+    const editBtn = document.getElementById('editBtn');
+    editBtn.addEventListener('click', () => {
+        const inputs = document.querySelectorAll('#dynamicFormGrid .field-value');
+        if (!editMode) {
+            inputs.forEach(inp => inp.readOnly = false);
+            editBtn.innerHTML = '💾 Enregistrer';
+            editBtn.style.background = '#E9A23B';
+        } else {
+            // sauvegarde fictive (console log)
+            console.log("Sauvegarde des données entreprise :");
+            const data = {};
+            document.querySelectorAll('.field').forEach((field, idx) => {
+                const label = field.querySelector('.field-label')?.innerText.replace(' :','') || `champ${idx}`;
+                const val = field.querySelector('.field-value')?.value;
+                data[label] = val;
+            });
+            console.table(data);
+            inputs.forEach(inp => inp.readOnly = true);
+            editBtn.innerHTML = '✏️ Modifier';
+            editBtn.style.background = 'rgba(230, 150, 50, 0.85)';
+        }
+        editMode = !editMode;
+    });
+
+    // destinations fusionnées avec overlay glass
+    const destinations = [
+        { name: "Désert du Namib", desc: "Dunes ocres & ciel étoilé", img: "https://images.pexels.com/photos/5587599/pexels-photo-5587599.jpeg?auto=compress&cs=tinysrgb&w=600" },
+        { name: "Savane du Serengeti", desc: "Migration, acacias, vastes plaines", img: "https://images.pexels.com/photos/390051/pexels-photo-390051.jpeg?auto=compress&cs=tinysrgb&w=600" },
+        { name: "Chutes Victoria", desc: "Fumée qui tonne", img: "https://images.pexels.com/photos/3780150/pexels-photo-3780150.jpeg?auto=compress&cs=tinysrgb&w=600" },
+        { name: "Zanzibar Stone Town", desc: "Ruelles blanches & épices", img: "https://images.pexels.com/photos/3601425/pexels-photo-3601425.jpeg?auto=compress&cs=tinysrgb&w=600" }
+    ];
+
+    const gridDest = document.getElementById('destinationsGrid');
+    destinations.forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'destination-card';
+        card.innerHTML = `
+            <div class="destination-img" style="background-image: url('${d.img}'); background-size: cover;"></div>
+            <div class="dest-content">
+                <h3><i class="fas fa-location-dot"></i> ${d.name}</h3>
+                <p>${d.desc}</p>
+                <span style="font-size:0.7rem; color:#F7CE7A;"><i class="fas fa-glass-cheers"></i> Expérience glass</span>
+            </div>
+        `;
+        gridDest.appendChild(card);
+    });
+
+    // petit ajustement pour remplacer les images manquantes par fallback style
+    const styleFallback = document.createElement('style');
+    styleFallback.textContent = `
+        .destination-img {
+            background-color: #7A5C3A;
+            background-blend-mode: overlay;
+        }
+    `;
+    document.head.appendChild(styleFallback);
+</script>
+</body>
+</html>

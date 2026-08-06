@@ -1,0 +1,40 @@
+:root {
+    /* Thème par défaut (Soleil / Sun) */
+    --accent-color: #F5B041;
+    --glass-border: rgba(255, 220, 150, 0.4);
+    --text-highlight: #FFD89A;
+    --validation-success: #2ECC71;
+    --validation-error: #E74C3C;
+}
+
+[data-theme="sun"] {
+    --accent-color: #F5B041;
+    --glass-border: rgba(255, 220, 150, 0.4);
+    --text-highlight: #FFD89A;
+}
+
+[data-theme="rain"] {
+    --accent-color: #3498DB;
+    --glass-border: rgba(174, 182, 191, 0.4);
+    --text-highlight: #AED6F1;
+}
+
+[data-theme="night"] {
+    --accent-color: #BB86FC;
+    --glass-border: rgba(187, 134, 252, 0.3);
+    --text-highlight: #E0E0E0;
+}
+
+[data-theme="storm"] {
+    --accent-color: #E0E0E0;
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-highlight: #FFFFFF;
+}
+
+[data-theme="harmattan"] {
+    --accent-color: #EB984E;
+    --glass-border: rgba(235, 152, 78, 0.4);
+    --text-highlight: #FAD7A0;
+}
+
+.highlight { color: var(--accent-color); }

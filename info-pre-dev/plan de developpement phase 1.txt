@@ -1,0 +1,282 @@
+## Tour des fonctions du site vitrine - Plan de développement pour VS Code
+
+Nous séparons clairement les deux entités :
+
+| Entité | Rôle | Codebase |
+|--------|------|----------|
+| **Site vitrine** | Présentation, démonstration des palettes, lead generation | HTML/CSS/JS statique |
+| **TATBooker (app)** | Application de gestion (hors scope actuel) | Python/Tkinter |
+
+---
+
+### État actuel du site vitrine (HTML/CSS/JS)
+
+| Fonction | Statut | Description |
+|----------|--------|-------------|
+| **Palettes climatiques** | ✅ Finalisé | 5 gammes (Soleil, Pluie, Nuit, Tempête, Harmattan) |
+| **Mouvement perpétuel** | ✅ Finalisé | Oscillation douce et continue autour des cibles |
+| **Sélecteur manuel** | ✅ Finalisé | Boutons d'attraction vers chaque palette |
+| **Transition fluide** | ✅ Finalisé | Dégradé animé en temps réel |
+| **Affichage hex couleurs** | ✅ Finalisé | Swatch + code hex lisible |
+| **Formulaire contact/demo** | ⚠️ À faire | Capture de leads |
+| **Responsive mobile** | ⚠️ À peaufiner | Adaptation petits écrans |
+| **Analytics** | ⚠️ À faire | Télémétrie simple |
+| **Hébergement** | ⚠️ À faire | Déploiement |
+
+---
+
+### Fonctions à développer pour le site vitrine (par ordre de priorité)
+
+#### Phase 1 : Fondations (Priorité haute)
+
+| Fonction | Description | Fichier suggéré |
+|----------|-------------|-----------------|
+| **Structure HTML sémantique** | Header, main, footer, sections claires | `index.html` |
+| **Palettes CSS consolidées** | Variables CSS pour les 5 gammes | `css/palettes.css` |
+| **JavaScript modulaire** | Séparation des responsabilités | `js/palette-engine.js` |
+| **Page d'accueil complète** | Présentation du concept | `index.html` |
+
+#### Phase 2 : Capture & Conversion (Priorité moyenne)
+
+| Fonction | Description | Fichier suggéré |
+|----------|-------------|-----------------|
+| **Formulaire de contact** | Nom, email, téléphone, message | `index.html` + `js/form-handler.js` |
+| **Formulaire démo** | Demande de démonstration personnalisée | `index.html` |
+| **Newsletter** | Inscription à la lettre d'information | `js/newsletter.js` |
+| **Stockage leads** | Intégration Google Sheets ou Supabase | `services/lead-capture.js` |
+
+#### Phase 3 : Engagement & Analytics (Priorité basse)
+
+| Fonction | Description | Fichier suggéré |
+|----------|-------------|-----------------|
+| **Section démonstration** | Vidéo ou animation interactive | `index.html` |
+| **Témoignages** | Retours clients (statiques ou dynamiques) | `data/testimonials.json` |
+| **Analytics basique** | Pages vues, clics, temps passé | Ajout Google Analytics |
+| **SEO de base** | Meta tags, description, mots-clés | `index.html` (head) |
+
+---
+
+### Structure de projet VS Code pour le site vitrine
+
+```
+TATBooker-Website/               # Site vitrine uniquement
+├── index.html                   # Page principale
+├── favicon.ico                  # Icône navigateur
+├── robots.txt                   # SEO
+├── sitemap.xml                  # SEO
+│
+├── css/
+│   ├── style.css                # Styles généraux
+│   ├── palettes.css             # Définition des 5 palettes (Soleil, Pluie, Nuit, Tempête, Harmattan)
+│   ├── glassmorphism.css        # Composants glass card
+│   └── responsive.css           # Media queries mobile/tablette
+│
+├── js/
+│   ├── main.js                  # Point d'entrée JavaScript
+│   ├── palette-engine.js        # Moteur d'oscillation des couleurs
+│   ├── palette-selector.js      # Sélecteur manuel (5 boutons)
+│   ├── weather-simulator.js     # Simulation météo (pour démo)
+│   ├── contact-form.js          # Gestion formulaire de contact
+│   ├── lead-capture.js          # Envoi leads vers Google Sheets/Supabase
+│   └── analytics.js             # Événements + Google Analytics
+│
+├── assets/
+│   ├── images/
+│   │   ├── hero-bg.jpg          # Image de fond principale
+│   │   ├── logo.svg             # Logo TATBooker
+│   │   └── favicon/             # Icônes multiples
+│   ├── fonts/
+│   │   └── inter/               # Police Inter (Google Fonts fallback)
+│   └── icons/                   # Icônes SVG
+│
+├── services/                    # Services externes (JS uniquement)
+│   ├── supabase-client.js       # Connexion Supabase pour leads
+│   └── email-service.js         # Envoi email de confirmation
+│
+├── data/                        # Données statiques
+│   └── testimonials.json        # Témoignages clients
+│
+└── scripts/                     # Utilitaires de déploiement
+    ├── deploy-netlify.sh        # Script déploiement Netlify
+    └── deploy-github-pages.sh   # Script déploiement GitHub Pages
+```
+
+---
+
+### Fichier de configuration VS Code (`.vscode/settings.json`)
+
+```json
+{
+    "liveServer.settings.root": "/",
+    "liveServer.settings.port": 5500,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.associations": {
+        "*.css": "css",
+        "*.json": "jsonc"
+    }
+}
+```
+
+---
+
+### Extensions VS Code recommandées (site vitrine)
+
+| Extension | Utilité |
+|-----------|---------|
+| **Live Server** (ritwickdey) | Prévisualisation locale en temps réel |
+| **Prettier** | Formatage HTML/CSS/JS |
+| **CSS Flexbox Cheatsheet** | Aide à la mise en page |
+| **Color Highlight** | Visualisation des couleurs |
+| **Thunder Client** | Test API (Supabase) |
+| **GitLens** | Suivi des modifications |
+| **Todo Tree** | Organisation des tâches |
+
+---
+
+### Plan de développement par sprint (site vitrine)
+
+#### Sprint 1 : Structure et moteur palette (Jour 1-2)
+
+```markdown
+- [ ] Créer `index.html` avec structure sémantique (header, main, footer)
+- [ ] Créer `css/palettes.css` avec variables pour 5 palettes
+- [ ] Créer `js/palette-engine.js` (oscillation perpétuelle)
+- [ ] Créer `js/palette-selector.js` (5 boutons cliquables)
+- [ ] Tester le rendu local avec Live Server
+```
+
+#### Sprint 2 : Sections complémentaires (Jour 3-4)
+
+```markdown
+- [ ] Ajouter section "Démo interactive" (affiche palette active)
+- [ ] Ajouter section "Fonctionnalités" (cartes glassmorphism)
+- [ ] Ajouter section "À propos" (concept des palettes)
+- [ ] Ajouter footer avec liens et copyright
+- [ ] Rendre responsive (mobile/tablette)
+```
+
+#### Sprint 3 : Capture de leads (Jour 5-6)
+
+```markdown
+- [ ] Créer formulaire de contact (Nom, Email, Téléphone, Message)
+- [ ] Créer formulaire de demande de démo
+- [ ] Configurer Supabase (gratuit) pour stockage leads
+- [ ] Implémenter `js/lead-capture.js`
+- [ ] Ajouter validation et messages de succès/erreur
+```
+
+#### Sprint 4 : Analytics et déploiement (Jour 7)
+
+```markdown
+- [ ] Ajouter Google Analytics (tracking pages vues, clics)
+- [ ] Ajouter `js/analytics.js` (événements personnalisés)
+- [ ] Optimiser SEO (meta tags, description, keywords)
+- [ ] Déployer sur Netlify ou GitHub Pages
+- [ ] Tester sur mobile, tablette, desktop
+```
+
+---
+
+### Structure HTML de base (`index.html`)
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATBooker | Palettes climatiques pour l'Afrique du Sud</title>
+    <meta name="description" content="Découvrez des palettes de couleurs dynamiques qui réagissent aux conditions météo : Soleil, Pluie, Nuit, Tempête, Harmattan.">
+    <meta name="keywords" content="couleurs, météo, Afrique du Sud, design, glassmorphism">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/palettes.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/glassmorphism.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-palette="sun">
+    <header class="glass-header">
+        <div class="logo">TATBooker</div>
+        <nav>
+            <a href="#demo">Démo</a>
+            <a href="#features">Fonctionnalités</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero section avec dégradé dynamique -->
+        <section id="hero" class="hero">
+            <h1>Des couleurs qui <span class="highlight">respirent</span> le climat</h1>
+            <p>Palettes dynamiques pour Le Cap, Johannesburg et Durban</p>
+        </section>
+
+        <!-- Section démo : sélecteur de palettes -->
+        <section id="demo" class="demo-section">
+            <h2>Expérimentez les gammes</h2>
+            <div class="palette-selector">
+                <button data-palette="sun">☀️ Soleil</button>
+                <button data-palette="rain">🌧️ Pluie</button>
+                <button data-palette="cool">🌙 Nuit</button>
+                <button data-palette="storm">⛈️ Tempête</button>
+                <button data-palette="dust">🏜️ Harmattan</button>
+            </div>
+            <div class="gradient-preview" id="gradientPreview">
+                <!-- Affichage des 5 couleurs -->
+            </div>
+        </section>
+
+        <!-- Section fonctionnalités -->
+        <section id="features" class="features">
+            <h2>Pourquoi nos palettes ?</h2>
+            <div class="glass-card">Transition fluide et imperceptible</div>
+            <div class="glass-card">5 ambiances climatiques uniques</div>
+            <div class="glass-card">Design glassmorphism élégant</div>
+        </section>
+
+        <!-- Section contact / lead capture -->
+        <section id="contact" class="contact">
+            <h2>Recevez la démo</h2>
+            <form id="leadForm">
+                <input type="text" name="name" placeholder="Nom" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="tel" name="phone" placeholder="Téléphone">
+                <button type="submit">Demander une démo</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 TATBooker — Palettes climatiques pour l'Afrique du Sud</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/palette-engine.js"></script>
+    <script src="js/palette-selector.js"></script>
+    <script src="js/lead-capture.js"></script>
+    <script src="js/analytics.js"></script>
+</body>
+</html>
+```
+
+---
+
+### Prochaine étape
+
+Dis-moi par où tu veux commencer :
+
+1. **Sprint 1** : Je génère les fichiers `palettes.css`, `palette-engine.js` et `index.html` de base
+2. **Sprint 2** : Je génère les sections complémentaires
+3. **Sprint 3** : Je génère les formulaires + intégration Supabase
+4. **Déploiement** : Je prépare les scripts Netlify/GitHub Pages

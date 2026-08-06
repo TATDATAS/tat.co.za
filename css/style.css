@@ -1,0 +1,310 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    /* Chemins mis à jour vers le dossier assets/images (Objectif 1.5) */
+    --bg-choice-1: url('../assets/images/hero-bg.jpg');
+    --bg-choice-2: url('../assets/images/safari-bg.jpg');
+    --bg-fallback: url('../assets/images/fallback-safari.jpg');
+    
+    background: var(--bg-gradient, linear-gradient(145deg, #D4772B 0%, #B8863D 25%, #8B8B3D 50%, #8B8C42 75%, #2E241F 100%)), 
+                var(--bg-choice-1),
+                var(--bg-fallback); 
+    background-blend-mode: overlay;
+    background-size: cover;
+    background-attachment: fixed;
+
+    /* Terrain d'Afrique : ocre -> sable -> brun terre -> vert savane profond */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Overlay grain subtil pour texture naturelle */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path d="M70 40 L90 20 L110 40 L130 30 L120 50 L140 70 L110 80 L90 70 L70 80 L40 70 L60 50 L50 30 Z" fill="white"/><circle cx="150" cy="140" r="12" fill="white"/><circle cx="40" cy="160" r="8" fill="white"/><path d="M160 80 L180 70 L190 90 L170 100 Z" fill="white"/><circle cx="30" cy="50" r="5" fill="white"/></svg>');
+    background-repeat: repeat;
+    pointer-events: none;
+}
+
+/* PARTICULES ANIMÉES (savane poussière / lucioles) */
+.particle {
+    position: fixed;
+    background: rgba(255, 235, 190, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(2px);
+    animation: floatUp 12s infinite ease-in-out;
+    z-index: 0;
+    transition: all 1s ease;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-20vh) translateX(40px) scale(1.2); opacity: 0; }
+}
+
+/* --- Adaptations Climatiques (Weather Simulator Logic) --- */
+
+[data-theme="storm"] .particle {
+    filter: blur(4px) brightness(1.5);
+    transform: skewX(-25deg) scaleY(0.8);
+}
+
+[data-theme="rain"] .particle {
+    width: 2px !important;
+    height: 25px !important;
+    border-radius: 0;
+    background: rgba(174, 214, 241, 0.4);
+    animation: rainDrop 1.5s linear infinite;
+}
+
+[data-theme="harmattan"] .particle {
+    background: rgba(235, 152, 78, 0.6);
+    width: 4px;
+    height: 4px;
+    animation-duration: 5s;
+}
+
+/* layout principal */
+.app-container {
+    position: relative;
+    z-index: 5;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2rem;
+}
+
+.hero-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #FFF5E6;
+    margin-bottom: 0.8rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #FFF4E0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.8rem;
+    margin-bottom: 3rem;
+}
+
+footer {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 0.75rem;
+    color: #DBCBAA;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px);
+    padding: 1rem;
+    border-radius: 3rem;
+}
+
+.footer-link {
+    color: #DBCBAA;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer-link:hover { color: #F1BF73; }
+
+.footer-logo {
+    height: 20px;
+    width: auto;
+    opacity: 0.7;
+}
+
+@keyframes rainDrop {
+    0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
+    100% { transform: translateY(110vh) translateX(20px); opacity: 0.8; }
+}
+
+
+/* --- Hero Section Refactoring --- */
+.hero-description {
+    color: #EFE3D0;
+    line-height: 1.4;
+}
+
+.hero-badges-area {
+    margin-top: 1.2rem;
+    display: flex;
+    gap: 10px;
+}
+
+.icon-sun { color: #FFCF8A; }
+.icon-mountain { color: #F3B543; }
+.icon-marker { color: #ECAE54; }
+.icon-title { color: #F1BF73; }
+
+.stat-unit { font-size: 0.9rem; }
+.stat-location { 
+    color: #F9E2B0; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-footer { margin-top: 1rem; }
+.stat-tag {
+    background: rgba(240, 180, 70, 0.3);
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+.field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.field-label {
+    margin-bottom: 0.5rem;
+    color: #FBE4BD;
+}
+
+.field-value {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.date-input-padding { padding-left: 38px !important; }
+
+.field-value:focus {
+    border-color: var(--accent-color);
+}
+
+.country-prefix, .date-format {
+    width: 80px !important;
+    flex: none !important;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.05) url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FBE4BD%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E') no-repeat right 8px center;
+    background-size: 8px;
+    padding: 10px 15px 10px 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color-scheme: dark;
+}
+
+.date-format {
+    width: 60px !important;
+    padding: 0 20px 0 8px;
+}
+
+/* --- Partner Section --- */
+.partner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.partner-title { color: #FBE4BD; font-weight: 500; }
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.partner-form-grid {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.footer-social { height: 30px; margin-bottom: -5px; }
+
+.form-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* --- Bannière de consentement RGPD --- */
+.consent-banner {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1000;
+    /* Initialement masqué, sera affiché par JS */
+    display: none; 
+}
+
+.consent-content p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #EFE3D0;
+}
+
+.consent-content a {
+    color: #F1BF73;
+    text-decoration: underline;
+}
+
+.consent-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-shrink: 0;
+}
+
+.glass-btn-secondary { background: rgba(255, 255, 255, 0.08); }

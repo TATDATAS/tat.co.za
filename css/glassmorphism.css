@@ -1,0 +1,431 @@
+/* BARRE DE NAVIGATION GLASS */
+.glass-nav {
+    background: rgba(255, 248, 235, 0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 2rem;
+    padding: 0 2rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid rgba(255, 245, 225, 0.3);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-img {
+    height: 105px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.logo-img:hover {
+    animation: logoPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes logoPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.logo-area h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FFF2DF, #FFD89A);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.3px;
+}
+
+.logo-area p {
+    font-size: 0.7rem;
+    color: rgba(255,245,220,0.9);
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: #FEF3E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: 0.2s;
+    border-bottom: 1px solid transparent;
+}
+
+.nav-links a:hover {
+    border-bottom-color: #FBBA6C;
+    color: #FFE3B5;
+}
+
+/* GRILLE DE CARTES GLASS */
+.glass-card {
+    background: rgba(22, 20, 18, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 2rem;
+    border: 1px solid rgba(255, 220, 150, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease, box-shadow 0.3s;
+    padding: 1.8rem;
+}
+
+.glass-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 205, 100, 0.7);
+    background: rgba(40, 35, 28, 0.35);
+}
+
+.card-welcome { flex: 1.4; }
+.card-stats { flex: 1; }
+
+.welcome-badge {
+    background: rgba(235, 185, 95, 0.3);
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #FFE2B5;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(4px);
+}
+
+.highlight {
+    background: linear-gradient(120deg, #F5B041, #E69A2E);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.stat-numbers {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #FFD89A;
+    margin-bottom: 0.2rem;
+}
+
+hr {
+    margin: 1rem 0;
+    border-color: rgba(255,215,150,0.3);
+}
+
+.destination-card {
+    /* État initial pour l'animation d'entrée (Objectif 1.5) */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 
+        opacity 0.8s ease-out, 
+        transform 0.8s cubic-bezier(0.2, 1, 0.3, 1),
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+
+    background: rgba(22, 20, 18, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 2rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 220, 150, 0.2);
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Déclenchement de l'animation via IntersectionObserver */
+.destination-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Effet de reflet dynamique au survol */
+.destination-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 70%);
+    pointer-events: none;
+    transition: transform 0.6s ease;
+}
+
+.destination-card:hover::before {
+    transform: translate(10%, 10%);
+}
+
+.destination-card:hover {
+    transform: translateY(-10px) !important;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+    background: rgba(40, 35, 28, 0.35);
+}
+
+/* Accents de couleur par catégorie (Alignement PaletteEngine) */
+.destination-card.safari:hover { border-color: #E8B55A; }
+.destination-card.nature:hover { border-color: #6B8C42; }
+.destination-card.coast:hover  { border-color: #4A90D9; }
+.destination-card.canyon:hover { border-color: #D48A3A; }
+.destination-card.mountain:hover { border-color: #4A6B2E; }
+.destination-card.beach:hover { border-color: #FFCF8A; }
+
+.destination-img {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    /* Image de secours par défaut si l'image dynamique est introuvable */
+    background-color: rgba(255, 255, 255, 0.05);
+    background-image: url('../assets/images/fallback-safari.jpg');
+    position: relative;
+}
+
+/* Animation Skeleton Screen */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.02) 25%, 
+        rgba(255, 255, 255, 0.08) 50%, 
+        rgba(255, 255, 255, 0.02) 75%
+    ) !important;
+    background-size: 200% 100% !important;
+    animation: shimmer 2s infinite linear;
+    background-image: none !important; /* Cache le fallback pendant le chargement */
+}
+
+.destination-img::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+}
+
+.dest-content { padding: 1rem 1.2rem 1.3rem; }
+.dest-content h3 { color: #FCE2B4; font-weight: 600; }
+.dest-content p { color: #EBD9C0; font-size: 0.8rem; margin: 0.4rem 0; }
+
+/* FORMULAIRE ADAPTATIF GLASS */
+.form-glass {
+    background: rgba(15, 15, 12, 0.3);
+    backdrop-filter: blur(16px);
+    border-radius: 2rem;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(255,200,100,0.35);
+}
+
+.field-value {
+    background: rgba(255, 248, 235, 0.05);
+    border: 1px solid rgba(255, 215, 150, 0.15);
+    color: #FFF;
+    font-family: 'Inter', monospace;
+    font-size: 0.85rem;
+    flex: 1;
+    outline: none;
+    transition: 0.2s;
+}
+
+.glass-btn {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #FBE4BD;
+    font-weight: 600;
+    padding: 0.8rem 2.5rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, background-color, border-color;
+}
+
+.glass-btn:hover {
+    background: var(--accent-color, #F5B041);
+    color: #1A1714;
+    border-color: var(--accent-color, #F5B041);
+    box-shadow: 0 0 25px rgba(245, 176, 65, 0.4);
+    transform: scale(1.02);
+}
+
+/* Témoignage glass */
+.testimonial {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 2rem;
+    padding: 1.2rem 1.8rem;
+    border-left: 6px solid #E9A23B;
+}
+
+/* Flatpickr Glassmorphism Customization */
+.flatpickr-calendar {
+    background: rgba(20, 18, 16, 0.4) !important; /* Un peu plus sombre pour la lisibilité */
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 220, 150, 0.2) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 1.5rem !important;
+    color: #FBE4BD !important;
+    z-index: 9999 !important; /* S'assure que le calendrier est toujours au-dessus */
+}
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+    background: #E9A23B !important;
+    border-color: #E9A23B !important;
+    color: #1a1714 !important;
+    box-shadow: 0 0 15px rgba(233, 162, 59, 0.7) !important;
+    animation: savannaGlow 2s infinite alternate ease-in-out;
+}
+.flatpickr-day.inRange {
+    background: rgba(233, 162, 59, 0.2) !important;
+    box-shadow: -5px 0 0 rgba(233, 162, 59, 0.2), 5px 0 0 rgba(233, 162, 59, 0.2) !important;
+}
+.flatpickr-months .flatpickr-month, .flatpickr-current-month .flatpickr-monthDropdown-months {
+    color: #FBE4BD !important;
+    fill: #FBE4BD !important;
+}
+
+/* Style de la bande (Header) du calendrier */
+.flatpickr-months,
+.flatpickr-innerContainer,
+.flatpickr-rContainer,
+.flatpickr-days,
+.flatpickr-weekdays,
+.flatpickr-month, /* Ajouté pour cibler le conteneur du mois/année */
+.flatpickr-current-month, /* Ajouté pour cibler le mois/année affiché */
+.flatpickr-current-month .flatpickr-monthDropdown-months, /* Ajouté pour le dropdown du mois */
+.flatpickr-current-month .numInputWrapper /* Ajouté pour le champ de l'année */
+{
+    background: transparent !important;
+    background-color: transparent !important; /* Force la transparence même si background-color est défini */
+    border-radius: 1.5rem 1.5rem 0 0;
+}
+
+/* Appliquer le border-radius uniquement au conteneur principal de l'en-tête */
+.flatpickr-months {
+    border-radius: 1.5rem 1.5rem 0 0;
+}
+
+/* Couleur des jours de la semaine (Lun, Mar...) */
+span.flatpickr-weekday {
+    color: rgba(241, 191, 115, 0.8) !important;
+    font-weight: 600;
+}
+
+/* Style des flèches de navigation (Précédent/Suivant) */
+.flatpickr-prev-month, .flatpickr-next-month {
+    fill: #F1BF73 !important; /* Couleur ocre pour les flèches */
+    padding: 10px !important;
+}
+
+@keyframes savannaGlow {
+    from {
+        box-shadow: 0 0 8px rgba(233, 162, 59, 0.4);
+        filter: brightness(1);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(233, 162, 59, 0.9);
+        filter: brightness(1.2);
+    }
+}
+
+/* Stylized Glass Switch */
+.glass-switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 18px;
+}
+.glass-switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: .4s;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #FBE4BD;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Tooltip Glass Effect */
+.glass-tooltip {
+    position: absolute;
+    background: rgba(20, 18, 16, 0.8);
+    backdrop-filter: blur(5px);
+    color: #FBE4BD;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(233, 162, 59, 0.3);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.field:hover .glass-tooltip { opacity: 1; }
+
+@keyframes neonFadeOutSlider {
+    0% { box-shadow: 0 0 10px rgba(233, 162, 59, 0.6), 0 0 20px rgba(233, 162, 59, 0.3); }
+    100% { box-shadow: 0 0 0 rgba(233, 162, 59, 0), 0 0 0 rgba(233, 162, 59, 0); } /* Fade to transparent shadow */
+}
+
+@keyframes neonFadeOutThumb {
+    0% { box-shadow: 0 0 10px #FFF, 0 0 20px #E9A23B, 0 0 30px #E9A23B; }
+    100% { box-shadow: 0 0 0 rgba(255, 255, 255, 0), 0 0 0 rgba(233, 162, 59, 0), 0 0 0 rgba(233, 162, 59, 0); } /* Fade to transparent shadow */
+}
+
+input:checked + .slider {
+    background-color: rgba(233, 162, 59, 0.4);
+    border-color: #E9A23B;
+    animation: neonFadeOutSlider 10s forwards;
+}
+input:checked + .slider:before {
+    transform: translateX(16px);
+    background-color: #FFF;
+    animation: neonFadeOutThumb 10s forwards;
+}

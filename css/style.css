@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+@keyframes kenburns-bg {
+    0% { background-size: 100% 100%; }
+    100% { background-size: 115% 115%; }
+}
+
 body {
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -17,6 +22,8 @@ body {
                 var(--bg-fallback); 
     background-blend-mode: overlay;
     background-size: cover;
+    background-position: center center;
+    animation: kenburns-bg 40s ease-out infinite alternate;
     background-attachment: fixed;
 
     /* Terrain d'Afrique : ocre -> sable -> brun terre -> vert savane profond */
@@ -287,7 +294,26 @@ footer {
     gap: 1rem;
     z-index: 1000;
     /* Initialement masqué, sera affiché par JS */
-    display: none; 
+    display: flex;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    pointer-events: none;
+}
+
+.consent-banner.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+/* Neutralise l'effet de survol de .glass-card pour la bannière */
+.consent-banner:hover {
+    /* Maintient la position et annule les effets de .glass-card:hover */
+    transform: translateX(-50%) translateY(0); 
+    background: rgba(22, 20, 18, 0.25);
+    border-color: rgba(255, 220, 150, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .consent-content p {
@@ -308,3 +334,18 @@ footer {
 }
 
 .glass-btn-secondary { background: rgba(255, 255, 255, 0.08); }
+
+/* --- Checkpoint Messages --- */
+.message {
+    padding: 0.8rem 1.2rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.message.info { background: rgba(60, 140, 200, 0.2); border: 1px solid rgba(60, 140, 200, 0.4); color: #ADD8E6; }
+.message.success { background: rgba(46, 204, 113, 0.2); border: 1px solid rgba(46, 204, 113, 0.4); color: #90EE90; }
+.message.warning { background: rgba(241, 196, 15, 0.2); border: 1px solid rgba(241, 196, 15, 0.4); color: #FFD700; }
+.message.error { background: rgba(231, 76, 60, 0.2); border: 1px solid rgba(231, 76, 60, 0.4); color: #FFA07A; }

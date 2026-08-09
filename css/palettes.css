@@ -1,40 +1,61 @@
+/* css/palettes.css */
+
 :root {
-    /* Thème par défaut (Soleil / Sun) */
-    --accent-color: #F5B041;
-    --glass-border: rgba(255, 220, 150, 0.4);
-    --text-highlight: #FFD89A;
-    --validation-success: #2ECC71;
-    --validation-error: #E74C3C;
+    /* Couleurs de base pour le thème général (inspiré des tons terre/safari) */
+    --primary-color: #3A2F2B; /* Brun foncé, terreux, pour le texte principal */
+    --secondary-color: #FBE4BD; /* Beige clair, sable, pour les fonds secondaires */
+    --accent-color: #E3AA57; /* Orange/Or chaud, pour les éléments mis en avant */
+
+    /* Couleurs pour le texte */
+    --text-color-dark: var(--primary-color);
+    --text-color-light: #FFFFFF; /* Blanc pour le texte sur fonds sombres */
+    --text-color-muted: #C9AE80; /* Couleur sourde pour les descriptions */
+
+    /* Couleurs pour les fonds */
+    --background-color-dark: #1A1A1A; /* Noir très foncé pour le corps */
+    --background-color-light: #FDFDFD; /* Presque blanc pour les sections claires */
+    --background-color-glass-base: rgba(255, 255, 255, 0.05); /* Base pour le glassmorphism */
+    --background-color-glass-hover: rgba(255, 255, 255, 0.1); /* Hover pour le glassmorphism */
+
+    /* Couleurs spécifiques aux palettes (valeurs par défaut, seront surchargées par data-palette) */
+    --palette-bg-start: #4A3C3B; /* Exemple: début de dégradé pour palette "sun" */
+    --palette-bg-end: #8B7355;   /* Exemple: fin de dégradé pour palette "sun" */
+    --palette-highlight: var(--accent-color); /* Couleur de surbrillance de la palette */
+    --palette-text: var(--text-color-light); /* Couleur de texte de la palette */
 }
 
-[data-theme="sun"] {
-    --accent-color: #F5B041;
-    --glass-border: rgba(255, 220, 150, 0.4);
-    --text-highlight: #FFD89A;
+/* Palettes spécifiques (ces règles seraient appliquées via JS en changeant l'attribut data-palette sur le body) */
+body[data-palette="sun"] {
+    --palette-bg-start: #F1BF73; /* Jaune soleil */
+    --palette-bg-end: #E3AA57;   /* Orange chaud */
+    --palette-highlight: #FFE3B5;
+    --palette-text: #3A2F2B;
 }
 
-[data-theme="rain"] {
-    --accent-color: #3498DB;
-    --glass-border: rgba(174, 182, 191, 0.4);
-    --text-highlight: #AED6F1;
+body[data-palette="rain"] {
+    --palette-bg-start: #6B7A8F; /* Gris bleuâtre */
+    --palette-bg-end: #4F6272;   /* Bleu acier */
+    --palette-highlight: #A2B9CD;
+    --palette-text: #FDFDFD;
 }
 
-[data-theme="night"] {
-    --accent-color: #BB86FC;
-    --glass-border: rgba(187, 134, 252, 0.3);
-    --text-highlight: #E0E0E0;
+body[data-palette="cool"] {
+    --palette-bg-start: #2C3E50; /* Bleu nuit */
+    --palette-bg-end: #1A2B3C;   /* Bleu très foncé */
+    --palette-highlight: #8E9FB2;
+    --palette-text: #FDFDFD;
 }
 
-[data-theme="storm"] {
-    --accent-color: #E0E0E0;
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --text-highlight: #FFFFFF;
+body[data-palette="storm"] {
+    --palette-bg-start: #4A4A4A; /* Gris orage */
+    --palette-bg-end: #2C2C2C;   /* Gris foncé */
+    --palette-highlight: #FF6B6B; /* Rouge éclair */
+    --palette-text: #FDFDFD;
 }
 
-[data-theme="harmattan"] {
-    --accent-color: #EB984E;
-    --glass-border: rgba(235, 152, 78, 0.4);
-    --text-highlight: #FAD7A0;
+body[data-palette="dust"] {
+    --palette-bg-start: #C19A6B; /* Brun sable */
+    --palette-bg-end: #A0784A;   /* Brun terre */
+    --palette-highlight: #E6D8B8;
+    --palette-text: #3A2F2B;
 }
-
-.highlight { color: var(--accent-color); }

@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Données simulées (normalement issues d'une API ou d'un fichier JSON)
     const destinations = [
-        { id: 1, title: 'Kruger Safari', location: 'Limpopo', class: 'safari', image: 'assets/images/kruger.jpg' },
-        { id: 2, title: 'Table Mountain', location: 'Cape Town', class: 'nature', image: 'assets/images/table-mountain.jpg' },
-        { id: 3, title: 'Garden Route', location: 'Western Cape', class: 'coast', image: 'assets/images/garden-route.jpg' },
-        { id: 4, title: 'Blyde River', location: 'Mpumalanga', class: 'canyon', image: 'assets/images/blyde.jpg' },
-        { id: 5, title: 'Drakensberg', location: 'KwaZulu-Natal', class: 'mountain', image: 'assets/images/drakensberg.jpg' },
-        { id: 6, title: 'Wild Coast', location: 'Eastern Cape', class: 'beach', image: 'assets/images/wild-coast.jpg' }
+        { id: 1, title: 'Kruger Safari', location: 'Limpopo', class: 'safari', image: 'assets/images/kruger.webp' },
+        { id: 2, title: 'Table Mountain', location: 'Cape Town', class: 'nature', image: 'assets/images/table-mountain.webp' },
+        { id: 3, title: 'Garden Route', location: 'Western Cape', class: 'coast', image: 'assets/images/garden-route.webp' },
+        { id: 4, title: 'Blyde River', location: 'Mpumalanga', class: 'canyon', image: 'assets/images/blyde.webp' },
+        { id: 5, title: 'Drakensberg', location: 'KwaZulu-Natal', class: 'mountain', image: 'assets/images/drakensberg.webp' },
+        { id: 6, title: 'Wild Coast', location: 'Eastern Cape', class: 'beach', image: 'assets/images/wild-coast.webp' },
     ];
 
     /**
@@ -163,15 +163,59 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Validation finale lors de la soumission
      */
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            const pattern = Utils.phoneFormats[prefixSelect.value];
-            if (pattern && phoneInput && phoneInput.value.length < pattern.length) {
-                e.preventDefault();
-                console.warn('[Form] Soumission bloquée : numéro de téléphone incomplet.');
-                phoneInput.style.borderColor = "#E74C3C"; // Rouge (Incomplet)
-                phoneInput.focus();
+    const contactForm = document.getElementById('contactForm'); // #contactForm
+    if (contactForm && typeof Utils !== 'undefined') {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('[Form] Soumission du formulaire de contact interceptée.');
+
+            // 1. Récupération et validation des données
+            const nameInput = document.getElementById('contact-name');
+            const emailInput = document.getElementById('contact-email');
+            const dateInput = document.getElementById('contact-date');
+            const messageInput = document.getElementById('contact-msg');
+
+            const isValidName = Utils.regex.name.test(nameInput.value);
+            const isValidEmail = Utils.regex.email.test(emailInput.value);
+            const isValidPhone = phoneInput.value.length > 5; // Validation simple
+
+            if (!isValidName || !isValidEmail || !isValidPhone) {
+                console.error('[Form] Validation échouée. Veuillez vérifier les champs.');
+                // Idéalement, afficher un message d'erreur plus global ici.
+                if (!isValidName) nameInput.style.borderColor = "#E74C3C";
+                if (!isValidEmail) emailInput.style.borderColor = "#E74C3C";
+                if (!isValidPhone) phoneInput.style.borderColor = "#E74C3C";
+                return;
+            }
+
+            // 2. Construction du payload pour le backend
+            const formData = {
+                name: nameInput.value,
+                email: emailInput.value,
+                phone: `${prefixSelect.value} ${phoneInput.value}`,
+                travel_dates: dateInput.value,
+                message: messageInput.value,
+                source: 'tat.co.za' // Traçabilité
+            };
+
+            console.log('[Form] Données prêtes à être envoyées:', formData);
+
+            // 3. Envoi via le bridge pywebview
+            if (window.pywebview && window.pywebview.api) {
+                try {
+                    await window.pywebview.api.execute('prospect', 'handle_web_lead', formData);
+                    console.log('[Form] Lead envoyé avec succès au backend TATBooker.');
+                    alert('Merci ! Votre demande a bien été envoyée. Nous vous recontacterons bientôt.');
+                    contactForm.reset();
+                    // Réinitialiser les bordures des champs
+                    [nameInput, emailInput, phoneInput].forEach(input => input.style.borderColor = 'rgba(255, 255, 255, 0.1)');
+                } catch (error) {
+                    console.error('[Form] Erreur lors de l\'envoi du lead:', error);
+                    alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+                }
+            } else {
+                console.warn('[Form] Contexte hors TATBooker. Affichage des données en console uniquement.');
+                alert('Ce formulaire est actif uniquement dans l\'application TATBooker.\nDonnées (simulées) :\n' + JSON.stringify(formData, null, 2));
             }
         });
     }
@@ -187,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editModeToggle = document.getElementById('edit-mode-toggle');
     const dynamicFormGrid = document.getElementById('dynamicFormGrid');
     const resetBtn = document.getElementById('partner-reset-btn');
+    const partnerFormFooter = document.getElementById('partner-form-footer');
 
     const partnerFields = [
         { id: 'partner-company', label: 'Nom de l\'agence', type: 'text', validation: 'name', placeholder: 'Wild Safari Co.' },
@@ -199,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (editModeToggle.checked) {
                 console.log('[Partner] Activation du mode partenaire.');
                 dynamicFormGrid.style.display = 'grid';
+                if (partnerFormFooter) partnerFormFooter.style.display = 'flex';
                 if (resetBtn) resetBtn.style.display = 'inline-flex';
                 // On génère les champs uniquement à la première activation
                 if (dynamicFormGrid.children.length === 0) {
@@ -216,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 dynamicFormGrid.style.display = 'none';
+                if (partnerFormFooter) partnerFormFooter.style.display = 'none';
                 if (resetBtn) resetBtn.style.display = 'none';
             }
         });
@@ -231,6 +278,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('[PartnerForm] Champs réinitialisés.');
             });
         }
+    }
+    
+    const partnerForm = document.getElementById('partnerForm');
+    if (partnerForm && typeof Utils !== 'undefined') {
+        partnerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('[PartnerForm] Soumission du formulaire partenaire interceptée.');
+
+            const companyInput = document.getElementById('partner-company');
+            const emailInput = document.getElementById('partner-email');
+            const phoneInput = document.getElementById('partner-phone');
+
+            const isValidCompany = companyInput && Utils.regex.name.test(companyInput.value);
+            const isValidEmail = emailInput && Utils.regex.email.test(emailInput.value);
+            const isValidPhone = phoneInput && phoneInput.value.length > 5;
+
+            if (!isValidCompany || !isValidEmail || !isValidPhone) {
+                console.error('[PartnerForm] Validation échouée.');
+                if (!isValidCompany) companyInput.style.borderColor = "#E74C3C";
+                if (!isValidEmail) emailInput.style.borderColor = "#E74C3C";
+                if (!isValidPhone) phoneInput.style.borderColor = "#E74C3C";
+                return;
+            }
+
+            const formData = {
+                name: companyInput.value,
+                email: emailInput.value,
+                phone: phoneInput.value,
+                message: "Demande de partenariat depuis le site vitrine.",
+                source: 'tat.co.za',
+                type: 'Partenaire' // Pour la classification dans le CRM
+            };
+
+            console.log('[PartnerForm] Données prêtes à être envoyées:', formData);
+
+            if (window.pywebview && window.pywebview.api) {
+                try {
+                    await window.pywebview.api.execute('prospect', 'handle_web_lead', formData);
+                    console.log('[PartnerForm] Lead partenaire envoyé avec succès au backend.');
+                    alert('Merci pour votre intérêt ! Votre demande de partenariat a bien été envoyée.');
+                    partnerForm.reset();
+                    [companyInput, emailInput, phoneInput].forEach(input => input.style.borderColor = 'rgba(255, 255, 255, 0.1)');
+                } catch (error) {
+                    console.error('[PartnerForm] Erreur lors de l\'envoi du lead:', error);
+                    alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+                }
+            } else {
+                console.warn('[PartnerForm] Contexte hors TATBooker. Affichage des données en console uniquement.');
+                alert('Ce formulaire est actif uniquement dans l\'application TATBooker.\nDonnées (simulées) :\n' + JSON.stringify(formData, null, 2));
+            }
+        });
     }
 
     // Initialisation du Weather Simulator s'il est présent

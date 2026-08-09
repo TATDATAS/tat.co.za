@@ -160,9 +160,14 @@
                 <button type="button" id="partner-reset-btn" class="glass-btn" style="padding: 0.4rem 1rem; font-size: 0.75rem; margin-left: 10px; display: none;">Réinitialiser</button>
             </div>
         </div>
-        <div class="form-grid partner-form-grid" id="dynamicFormGrid">
-            <!-- les champs seront générés ici (prouvant la flexibilité) -->
-        </div>
+        <form id="partnerForm">
+            <div class="form-grid partner-form-grid" id="dynamicFormGrid">
+                <!-- les champs seront générés ici (prouvant la flexibilité) -->
+            </div>
+            <div class="form-footer" id="partner-form-footer" style="display: none; margin-top: 1.5rem;">
+                <button type="submit" class="glass-btn">Devenir partenaire</button>
+            </div>
+        </form>
     </div>
 
     <!-- Témoignage glass -->
@@ -186,7 +191,7 @@
     </div>
     <div class="consent-actions">
         <button id="consent-accept" class="glass-btn">Accepter</button>
-        <button id="consent-refuse" class="glass-btn-secondary">Refuser</button>
+        <button id="consent-refuse" class="glass-btn">Refuser</button>
     </div>
 </div>
 
@@ -194,12 +199,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
-<script src="./js/palette-engine.js"></script>
-<script src="./js/weather-simulator.js"></script>
-<script src="./js/utils.js"></script>
-<script src="./js/lead-capture.js"></script>
-<script src="./js/consent-manager.js"></script>
-<script src="./js/main.js"></script>
+<script type="module" src="./js/palette-engine.js"></script>
+<script type="module" src="./js/weather-simulator.js"></script>
+<script type="module" src="./js/utils.js"></script>
+<script type="module" src="./js/lead-capture.js"></script>
+<script type="module" src="./js/consent-manager.js"></script>
+<script type="module" src="./js/main.js"></script>
 </body>
 </html>
 <script>console.log('index.html: Fin du chargement du body et des scripts.');</script>

@@ -26,11 +26,16 @@
             <h1><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> CheckPoint</h1>
             <p style="margin-top: 1rem; color: #EFE3D0;">Cette page sert de point de contrôle ou de page de statut pour des opérations spécifiques.</p>
             <p style="font-size: 0.9rem; color: #C9AE80;">Le contenu sera généré dynamiquement.</p>
+            
+            <div id="checkpoint-status" style="margin-top: 1.5rem; display: none;"></div>
 
             <input type="number" class="field-value" style="text-align: center; font-size: 1.5rem; max-width: 250px; margin: 2rem auto; display: block;" placeholder="0">
+            <button id="submit-number-btn" class="glass-btn" style="margin: 1rem auto; display: block;">Envoyer le nombre</button>
 
             <a href="index.html" class="glass-btn" style="margin-top: 2rem;">Retour à l'accueil</a>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./js/checkpoint-manager.js"></script>
 </body>
 </html>

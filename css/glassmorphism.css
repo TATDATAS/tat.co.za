@@ -181,13 +181,15 @@ hr {
     background: rgba(40, 35, 28, 0.35);
 }
 
-/* Accents de couleur par catégorie (Alignement PaletteEngine) */
-.destination-card.safari:hover { border-color: #E8B55A; }
-.destination-card.nature:hover { border-color: #6B8C42; }
-.destination-card.coast:hover  { border-color: #4A90D9; }
-.destination-card.canyon:hover { border-color: #D48A3A; }
-.destination-card.mountain:hover { border-color: #4A6B2E; }
-.destination-card.beach:hover { border-color: #FFCF8A; }
+/* Accent couleur par catégorie via variable CSS */
+.destination-card.safari  { --card-accent: #E8B55A; }
+.destination-card.nature  { --card-accent: #6B8C42; }
+.destination-card.coast   { --card-accent: #4A90D9; }
+.destination-card.canyon  { --card-accent: #D48A3A; }
+.destination-card.mountain{ --card-accent: #4A6B2E; }
+.destination-card.beach   { --card-accent: #FFCF8A; }
+
+.destination-card:hover { border-color: var(--card-accent, rgba(255, 205, 100, 0.7)); }
 
 .destination-img {
     height: 150px;

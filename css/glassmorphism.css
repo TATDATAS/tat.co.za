@@ -95,6 +95,159 @@
 .card-welcome { flex: 1.4; }
 .card-stats { flex: 1; }
 
+.dmc-glass-card {
+    width: 100%;
+    background: rgba(22, 20, 18, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 2rem;
+    border: 1px solid rgba(255, 220, 150, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    margin: 0 0 2rem;
+}
+
+.dmc-glass-card .section-title {
+    margin-bottom: 0.5rem;
+    font-size: clamp(1.6rem, 2vw, 2.2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #F8E8C9;
+}
+
+.dmc-glass-card .section-subtitle {
+    color: rgba(245, 235, 220, 0.85);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 0.8rem;
+}
+
+.dmc-glass-card .subsection {
+    margin-top: 2rem;
+}
+
+.dmc-glass-card .subsection h3 {
+    margin: 0 0 1.2rem;
+    color: #F9C978;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* Sous-cartes internes */
+.subcard {
+    flex: 1 1 0;
+    min-width: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Titres des sous-cartes */
+.subcard h3 {
+    font-size: 1.15rem;
+    margin: 0 0 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #F1BF73;
+}
+
+.subcard-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 215, 150, 0.2);
+    margin: 0 0 0.7rem;
+}
+
+.subcard-copy {
+    margin: 0 0 0.9rem 0.8rem;
+    font-size: 0.72rem;
+    line-height: 1.8;
+    color: rgba(248, 230, 195, 0.8);
+}
+
+.subcard-line {
+    display: block;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.subcard-detail {
+    display: block;
+    margin-left: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(248, 230, 195, 0.8);
+}
+
+.dmc-glass-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.dmc-subcards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+    margin-top: 0.2rem;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+@media (max-width: 1024px) {
+    .dmc-subcards {
+        grid-template-columns: 1fr;
+    }
+}
+
+.icon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    text-align: center;
+    height: 130px;
+    min-height: 130px;
+    max-height: 130px;
+    padding: 0.8rem 0.6rem;
+    box-sizing: border-box;
+    border-radius: 1.1rem;
+    background: rgba(255, 248, 235, 0.04);
+    border: 1px solid rgba(255, 215, 150, 0.16);
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.icon-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 205, 100, 0.5);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.icon-card img {
+    width: 98px;
+    height: 98px;
+    flex-shrink: 0;
+    object-fit: contain;
+    filter: none;
+}
+
+.icon-card .label {
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: #F8E6C3;
+    font-weight: 500;
+}
+
 .welcome-badge {
     background: rgba(235, 185, 95, 0.3);
     display: inline-block;
@@ -150,6 +303,8 @@ hr {
     justify-content: flex-end;
     cursor: pointer;
     position: relative;
+    padding: 0;
+    isolation: isolate;
 }
 
 /* Déclenchement de l'animation via IntersectionObserver */
@@ -192,13 +347,19 @@ hr {
 .destination-card:hover { border-color: var(--card-accent, rgba(255, 205, 100, 0.7)); }
 
 .destination-img {
-    height: 150px;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     /* Image de secours par défaut si l'image dynamique est introuvable */
     background-color: rgba(255, 255, 255, 0.05);
     background-image: url('../assets/images/fallback-safari.jpg');
-    position: relative;
+    z-index: 0;
+    transform: scale(1.04);
+    border-radius: 2rem;
 }
 
 /* Animation Skeleton Screen */
@@ -221,14 +382,29 @@ hr {
 .destination-img::after {
     content: "";
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(10, 9, 8, 0.78) 0%,
+        rgba(10, 9, 8, 0.35) 42%,
+        rgba(10, 9, 8, 0.12) 70%,
+        rgba(10, 9, 8, 0.05) 100%
+    );
 }
 
-.dest-content { padding: 1rem 1.2rem 1.3rem; }
+.dest-content {
+    position: relative;
+    z-index: 1;
+    padding: 1.2rem 1.2rem 1.3rem;
+    margin-top: auto;
+    background: linear-gradient(
+        to top,
+        rgba(10, 9, 8, 0.78) 0%,
+        rgba(10, 9, 8, 0.52) 38%,
+        rgba(10, 9, 8, 0.15) 72%,
+        rgba(10, 9, 8, 0) 100%
+    );
+}
 .dest-content h3 { color: #FCE2B4; font-weight: 600; }
 .dest-content p { color: #EBD9C0; font-size: 0.8rem; margin: 0.4rem 0; }
 

@@ -335,6 +335,35 @@ footer {
 
 .glass-btn-secondary { background: rgba(255, 255, 255, 0.08); }
 
+/* Why work with Tambo list */
+.why-tambo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.why-tambo-list li {
+    color: #EFE3D0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding-left: 1.2rem;
+    position: relative;
+}
+
+.why-tambo-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: #F1BF73;
+    font-weight: 700;
+}
+
+.why-tambo-list li strong {
+    color: #FFD89A;
+    font-weight: 600;
+}
+
 /* --- Checkpoint Messages --- */
 .message {
     padding: 0.8rem 1.2rem;

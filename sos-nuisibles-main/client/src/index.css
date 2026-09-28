@@ -11,6 +11,7 @@ html { scroll-behavior: smooth; background: #07172b; }
 body { margin: 0; background: #07172b; color: #fff7e9; font-family: 'DM Sans', sans-serif; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
 
 .site-shell { min-height: 100vh; }
 .site-header { position: absolute; z-index: 20; top: 0; left: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 25px clamp(24px, 5vw, 80px); color: #fff7e9; }
@@ -54,7 +55,7 @@ h1 { max-width: 710px; margin-bottom: 27px; font-size: clamp(74px, 9vw, 144px); 
 h1 em, h2 em { color: #ff4f9a; font-style: normal; }
 .hero-summary { width: min(100%, 470px); margin-bottom: 29px; color: rgba(255,247,233,.83); font-size: 16px; line-height: 1.65; }
 .hero-actions { display: flex; align-items: center; gap: 25px; flex-wrap: wrap; }
-.primary-action { min-height: 53px; padding: 15px 19px; font-size: 12px; }
+.primary-action { min-height: 53px; padding: 15px 19px; font-size: 12px; border: 0; cursor: pointer; }
 .text-action { display: inline-flex; align-items: center; gap: 7px; color: #fff7e9; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; border-bottom: 1px solid rgba(255,247,233,.5); padding-bottom: 4px; transition: border-color .18s, color .18s; }
 .text-action:hover { color: #61e3e7; border-color: #61e3e7; }
 .hero-signal { align-self: end; justify-self: end; width: min(100%, 255px); padding: 20px 0 0 25px; border-top: 1px solid rgba(255,247,233,.63); border-left: 1px solid rgba(255,247,233,.63); animation: rise-in .62s .13s cubic-bezier(.23,1,.32,1) both; }
@@ -72,22 +73,21 @@ h1 em, h2 em { color: #ff4f9a; font-style: normal; }
 .marquee-track { display: flex; align-items: center; gap: 26px; width: max-content; font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: .07em; animation: marquee 20s linear infinite; }
 .marquee-track svg { flex: 0 0 auto; width: 13px; }
 
-.services-section { position: relative; color: #07172b; padding: 128px clamp(24px, 8vw, 128px) 142px; background: #f7f0df; }
-.split-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 35px; max-width: 1210px; margin: auto auto 62px; }
+.services-section { position: relative; color: #fff7e9; padding: 120px clamp(24px, 8vw, 128px) 830px; background: #07172b; }
+.services-section::before { content: ''; position: absolute; inset: 0; background: url('/images/service-background.svg') center / cover no-repeat; opacity: .70; pointer-events: none; }
+.split-heading { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-end; gap: 35px; max-width: 1210px; margin: auto auto 62px; }
 .dark-eyebrow { color: #d92974; }
 h2 { margin-bottom: 0; font-size: clamp(62px, 7vw, 108px); }
 .heading-note { width: min(100%, 303px); margin: 0 0 10px; font-size: 14px; line-height: 1.63; }
-.service-layout { display: grid; grid-template-columns: 43% 1fr; max-width: 1210px; margin: auto; }
-.service-visual { position: relative; min-height: 550px; background: #07172b url('/manus-storage/sos-nuisibles-services_4b77f0b1.jpg') center/cover no-repeat; overflow: hidden; }
-.service-visual::after { content: 'SOS / CIBLEZ LA SOURCE'; position: absolute; left: 24px; bottom: 20px; color: #fff7e9; font-size: 9px; font-weight: 800; letter-spacing: .19em; }
-.service-list { align-self: center; padding-left: clamp(36px, 6vw, 93px); }
-.service-item { position: relative; display: grid; grid-template-columns: 36px 48px 1fr 24px; align-items: start; gap: 14px; padding: 26px 0 27px; border-top: 1px solid rgba(7,23,43,.21); transition: padding-left .22s cubic-bezier(.23,1,.32,1); }
-.service-item:last-child { border-bottom: 1px solid rgba(7,23,43,.21); }
-.service-item:hover { padding-left: 11px; }
+.service-layout { position: relative; z-index: 1; max-width: 1210px; margin: auto; }
+.service-list { display: grid; gap: 0; }
+.service-item { position: relative; display: grid; grid-template-columns: 36px 48px minmax(0, 1fr) 24px; align-items: start; gap: 14px; padding: 26px 0 27px; border-top: 1px solid rgba(255,247,233,.21); transition: padding-left .22s cubic-bezier(.23,1,.32,1), background-color .2s ease; }
+.service-item:last-child { border-bottom: 1px solid rgba(255,247,233,.21); }
+.service-item:hover { padding-left: 11px; background: rgba(255,255,255,0.02); }
 .service-number { padding-top: 4px; color: #d92974; font-family: 'Bebas Neue', sans-serif; font-size: 17px; }
-.service-icon { display: grid; place-items: center; width: 43px; height: 43px; color: #07172b; border: 1px solid rgba(7,23,43,.45); border-radius: 50%; }
+.service-icon { display: grid; place-items: center; width: 43px; height: 43px; color: #fff7e9; border: 1px solid rgba(255,247,233,.45); border-radius: 50%; }
 .service-item h3 { margin-bottom: 5px; font-family: 'Bebas Neue', sans-serif; font-size: 38px; font-weight: 400; letter-spacing: .04em; line-height: 1; }
-.service-item p { max-width: 370px; margin-bottom: 0; font-size: 13px; line-height: 1.55; }
+.service-item p { max-width: 620px; margin-bottom: 0; font-size: 13px; line-height: 1.55; }
 .service-arrow { margin-top: 8px; color: #d92974; }
 
 .method-section { position: relative; overflow: hidden; padding: 132px clamp(24px, 8vw, 128px); background: #ff4f9a; color: #07172b; }
@@ -104,11 +104,22 @@ h2 { margin-bottom: 0; font-size: clamp(62px, 7vw, 108px); }
 
 .contact-section { position: relative; min-height: 650px; display: flex; align-items: center; padding: 110px clamp(24px, 8vw, 128px); overflow: hidden; isolation: isolate; }
 .contact-image, .contact-overlay { position: absolute; inset: 0; z-index: -2; }
-.contact-image { background: #07172b url('/manus-storage/sos-nuisibles-cta_d71a9d0f.jpg') center/cover no-repeat; }
+.contact-image { background: linear-gradient(135deg, rgba(7,23,43,.38), rgba(7,23,43,.7)); }
+.contact-image img { width: 100%; height: 100%; object-fit: cover; opacity: .82; }
 .contact-overlay { z-index: -1; background: linear-gradient(90deg, rgba(7,23,43,.94) 0%, rgba(7,23,43,.7) 47%, rgba(7,23,43,.18) 100%); }
-.contact-content { max-width: 820px; }
+.contact-content { max-width: 820px; position: relative; z-index: 1; }
 .contact-content h2 { margin-bottom: 27px; font-size: clamp(64px, 8.7vw, 128px); }
 .contact-content p:not(.eyebrow) { max-width: 440px; margin-bottom: 28px; color: rgba(255,247,233,.85); font-size: 16px; line-height: 1.6; }
+.contact-form { max-width: 600px; padding: 24px 22px 0; background: rgba(7,23,43,.26); border: 1px solid rgba(255,247,233,.2); backdrop-filter: blur(8px); }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.field { display: grid; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.field span { color: #61e3e7; }
+.field input, .field select, .field textarea { width: 100%; border: 1px solid rgba(255,247,233,.26); background: rgba(255,247,233,.94); color: #07172b; padding: 12px 14px; font: inherit; border-radius: 0; }
+.field input::placeholder, .field textarea::placeholder { color: rgba(7,23,43,.6); }
+.field textarea { min-height: 120px; resize: vertical; }
+.full-width { grid-column: 1 / -1; }
+.form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 22px; }
+.form-preview { margin: 0; max-width: 360px; color: rgba(255,247,233,.7); font-size: 11px; line-height: 1.5; letter-spacing: .03em; }
 .large-action { padding: 17px 22px; }
 .contact-caption { position: absolute; right: clamp(24px, 5vw, 80px); bottom: 27px; display: flex; align-items: center; gap: 8px; color: rgba(255,247,233,.82); font-size: 10px; font-weight: 700; letter-spacing: .16em; }
 
@@ -163,8 +174,8 @@ h2 { margin-bottom: 0; font-size: clamp(62px, 7vw, 108px); }
   .method-body { margin-top: 40px; }
   .method-lead { font-size: 16px; }
   .contact-section { min-height: 610px; padding: 94px 25px; }
-  .contact-image { background-position: 67% center; }
-  .contact-overlay { background: linear-gradient(90deg, rgba(7,23,43,.95), rgba(7,23,43,.46)); }
+  .contact-form { max-width: none; }
+  .form-grid { grid-template-columns: 1fr; }
   .contact-caption { left: 25px; right: auto; bottom: 22px; font-size: 8px; }
   .site-footer { display: grid; justify-items: start; padding: 30px 25px 88px; }
   .footer-meta { justify-items: start; }

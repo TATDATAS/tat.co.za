@@ -8,99 +8,117 @@ import {
   Bug,
   Check,
   CircleDot,
-  Clock3,
   Crosshair,
   Menu,
   MessageCircle,
-  MousePointer2,
   PhoneCall,
   Rat,
-  ShieldCheck,
   Sparkles,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from "react";
 
-const whatsappUrl =
-  "https://wa.me/33678785877?text=Bonjour%20SOS%20NUISIBLES%2C%20j%27ai%20besoin%20d%27une%20intervention.";
+const whatsappBaseUrl = "https://wa.me/33678785877?text=";
+const whatsappUrl = `${whatsappBaseUrl}${encodeURIComponent("Bonjour SOS NUISIBLES, j'ai besoin d'une intervention.")}`;
 
 const services = [
   {
     number: "01",
     icon: Rat,
     title: "Rongeurs",
-    text: "Souris, rats et traces de passage : on cible le foyer, pas seulement le symptôme.",
+    text: "Souris, rats et traces de passage : intervention ciblée sur le foyer et les points d’entrée.",
   },
   {
     number: "02",
     icon: Bug,
     title: "Insectes",
-    text: "Blattes, fourmis, punaises et autres intrus : une réponse adaptée à votre espace.",
+    text: "Blattes, fourmis, punaises et autres intrusions : diagnostic rapide et traitement adapté.",
   },
   {
     number: "03",
     icon: Sparkles,
     title: "Nids & volants",
-    text: "Guêpes, frelons et nids gênants : une intervention guidée, sans prise de risque inutile.",
+    text: "Guêpes, frelons et nids gênants : une réponse en sécurité, sans prise de risque inutile.",
   },
 ];
 
 const assurances = [
   "Une demande simple par message",
-  "Une réponse orientée solution",
+  "Un diagnostic orienté vers une vraie solution",
   "Des conseils clairs pour la suite",
 ];
 
-const userSlides = [
-  "/manus-storage/01_d1f858a9.png",
-  "/manus-storage/02_c8533a18.png",
-  "/manus-storage/03_b425ef04.png",
-  "/manus-storage/04_0a3614aa.png",
-  "/manus-storage/05_fda39b18.png",
-  "/manus-storage/06_850fee48.png",
-  "/manus-storage/07_f79179f5.png",
-  "/manus-storage/08_0eed2efc.png",
-  "/manus-storage/09_bea625e3.png",
-  "/manus-storage/10_6afda52f.png",
-  "/manus-storage/11_4a84e0be.png",
-  "/manus-storage/12_7ff89c30.png",
-  "/manus-storage/13_d72ca23c.png",
-  "/manus-storage/14_45145d7c.png",
-  "/manus-storage/15_7ee07301.png",
-  "/manus-storage/16_49cb5f87.png",
-  "/manus-storage/17_6dee5e14.png",
-  "/manus-storage/18_cdd8f261.png",
-  "/manus-storage/19_a0b6f57e.png",
-  "/manus-storage/20_90225349.png",
-  "/manus-storage/21_d873f528.png",
+const contactOptions = [
+  "Rongeurs",
+  "Insectes",
+  "Nids ou guêpes",
+  "Punaises de lit",
+  "Présence régulière",
+  "Autre situation",
 ];
+
+const heroSlides = [
+  "/images/hero-scene-01.svg",
+  "/images/hero-scene-02.svg",
+  "/images/hero-scene-03.svg",
+  "/images/hero-scene-04.svg",
+];
+
+const defaultForm = {
+  name: "",
+  phone: "",
+  problemType: "",
+  message: "",
+};
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [form, setForm] = useState(defaultForm);
 
   useEffect(() => {
     if (isPaused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % userSlides.length);
+      setActiveSlide((current) => (current + 1) % heroSlides.length);
     }, 10000);
     return () => window.clearInterval(timer);
   }, [isPaused]);
 
   const closeMenu = () => setMenuOpen(false);
-  const previousSlide = () => setActiveSlide((current) => (current - 1 + userSlides.length) % userSlides.length);
-  const nextSlide = () => setActiveSlide((current) => (current + 1) % userSlides.length);
+  const previousSlide = () => setActiveSlide((current) => (current - 1 + heroSlides.length) % heroSlides.length);
+  const nextSlide = () => setActiveSlide((current) => (current + 1) % heroSlides.length);
+
+  const handleFieldChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = event.target;
+    setForm((current) => ({ ...current, [name]: value }));
+  };
+
+  const whatsappMessage = useMemo(() => {
+    const summary = [
+      "Bonjour SOS NUISIBLES,",
+      form.name ? `Je m'appelle ${form.name}.` : "Je souhaite une intervention.",
+      form.phone ? `Téléphone : ${form.phone}` : "Téléphone : à préciser.",
+      form.problemType ? `Type de nuisance : ${form.problemType}` : "Type de nuisance : à préciser.",
+      form.message ? `Détails : ${form.message}` : "Détails : je souhaite plus d’informations.",
+    ];
+    return summary.join("\n");
+  }, [form]);
+
+  const whatsappLink = `${whatsappBaseUrl}${encodeURIComponent(whatsappMessage)}`;
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    window.open(whatsappLink, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <div className="site-shell overflow-x-clip bg-[#07172b] text-[#fff7e9]">
       <header className="site-header">
         <a className="brand" href="#accueil" aria-label="SOS NUISIBLES — accueil">
-          <img
-            src="/manus-storage/sos-nuisibles-badge_f2d65642.png"
-            alt=""
-            className="brand-mark"
-          />
+          <img src="/images/brand-badge.svg" alt="" className="brand-mark" />
           <span className="brand-copy" aria-label="SOS NUISIBLES">
             <b>SOS</b>
             <strong>NUISIBLES</strong>
@@ -113,12 +131,7 @@ export default function Home() {
           <a href="#contact">Contact</a>
         </nav>
 
-        <a
-          className="header-contact"
-          href={whatsappUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="header-contact" href={whatsappUrl} target="_blank" rel="noreferrer">
           <MessageCircle size={17} strokeWidth={2.5} />
           <span>WhatsApp</span>
         </a>
@@ -154,7 +167,7 @@ export default function Home() {
         >
           <div className="hero-backdrop" aria-hidden="true">
             <div className="hero-slides">
-              {userSlides.map((src, index) => (
+              {heroSlides.map((src, index) => (
                 <img
                   key={src}
                   className={`hero-slide ${index === activeSlide ? "is-active" : ""}`}
@@ -175,7 +188,7 @@ export default function Home() {
                 L’AVANTAGE.
               </h1>
               <p className="hero-summary">
-                Une présence qui s’installe ? Envoyez-nous un message. SOS NUISIBLES
+                Une présence qui s’installe ? Envoyez un message. SOS NUISIBLES
                 vous aide à retrouver un espace serein, sans détour.
               </p>
               <div className="hero-actions">
@@ -191,19 +204,19 @@ export default function Home() {
             </div>
 
             <aside className="hero-signal" aria-label="Message d’intervention">
-              <div className="signal-topline"><Crosshair size={17} /> SIGNAL REÇU</div>
+              <div className="signal-topline"><Crosshair size={17} /> URGENCE</div>
               <p>Un message, une intervention.</p>
               <span>RÉPONSE PAR WHATSAPP</span>
               <div className="signal-line" />
-              <small>† NUISIBLES : SORTIE DE ZONE</small>
+              <small>† NUISIBLES : TITI AU SECOURS</small>
             </aside>
           </div>
           <div className="hero-corner-note">SOS / 24 H</div>
-          <div className="hero-index" aria-hidden="true"><i /> <span>{String(activeSlide + 1).padStart(2, "0")} / {String(userSlides.length).padStart(2, "0")}</span></div>
+          <div className="hero-index" aria-hidden="true"><i /> <span>{String(activeSlide + 1).padStart(2, "0")} / {String(heroSlides.length).padStart(2, "0")}</span></div>
           <div className="hero-slideshow-controls" aria-label="Contrôles du slideshow">
             <button type="button" onClick={previousSlide} aria-label="Image précédente">←</button>
             <div className="hero-dots">
-              {userSlides.map((src, index) => (
+              {heroSlides.map((src, index) => (
                 <button
                   key={src}
                   type="button"
@@ -221,12 +234,12 @@ export default function Home() {
 
         <section className="marquee-section" aria-label="Nos domaines d’intervention">
           <div className="marquee-track">
-            <span>RONgeurs</span><CircleDot />
+            <span>RONGEURS</span><CircleDot />
             <span>INSECTES</span><CircleDot />
-            <span>NIDS</span><CircleDot />
-            <span>RONgeurs</span><CircleDot />
-            <span>INSECTES</span><CircleDot />
-            <span>NIDS</span><CircleDot />
+            <span>NIDS DE GUEPES</span><CircleDot />
+            <span>GROS RONGEURS</span><CircleDot />
+            <span>INSECTES RAMPANTS</span><CircleDot />
+            <span>NIDS DE FRELONS</span><CircleDot />
           </div>
         </section>
 
@@ -234,13 +247,12 @@ export default function Home() {
           <div className="section-heading split-heading">
             <div>
               <p className="eyebrow dark-eyebrow"><span /> LES MISSIONS</p>
-              <h2 id="services-title">CHAQUE INTRUS<br /><em>A SA SORTIE.</em></h2>
+              
             </div>
-            <p className="heading-note">Décrivez ce que vous observez. Nous vous orientons vers l’intervention la plus juste.</p>
+            <p className="heading-note">Décrivez ce que vous observez. Orientation vers l’intervention la plus juste.</p>
           </div>
 
           <div className="service-layout">
-            <div className="service-visual" role="img" aria-label="Illustration stylisée d’intervention contre les nuisibles" />
             <div className="service-list">
               {services.map(({ number, icon: Icon, title, text }) => (
                 <article className="service-item" key={title}>
@@ -266,7 +278,7 @@ export default function Home() {
             </div>
             <div className="method-body">
               <div className="method-stamp"><Crosshair size={42} /><span>INTERVENIR<br />JUSTE</span></div>
-              <p className="method-lead">Pas besoin de passer par dix écrans : racontez-nous votre situation sur WhatsApp et faites le premier pas vers une solution.</p>
+              <p className="method-lead">Pas besoin de passer par dix écrans : racontez votre situation sur WhatsApp et faites le premier pas vers une solution.</p>
               <ul>
                 {assurances.map((item) => (
                   <li key={item}><Check size={18} strokeWidth={3} />{item}</li>
@@ -280,17 +292,48 @@ export default function Home() {
         </section>
 
         <section className="contact-section" id="contact" aria-labelledby="contact-title">
-          <div className="contact-image" aria-hidden="true" />
+          <div className="contact-image" aria-hidden="true">
+            <img src="/images/cta-signal.svg" alt="" />
+          </div>
           <div className="contact-overlay" />
           <div className="contact-content">
-            <p className="eyebrow"><span /> LE SIGNAL EST ICI</p>
+            <p className="eyebrow"><span /> LA SOLUTION EST ICI</p>
             <h2 id="contact-title">UNE PRÉSENCE<br />VOUS GÊNE ?<br /><em>ON PASSE À L’ACTION.</em></h2>
-            <p>Expliquez-nous ce qui se passe. Le premier message suffit pour démarrer.</p>
-            <a className="primary-action large-action" href={whatsappUrl} target="_blank" rel="noreferrer">
-              <MessageCircle size={21} fill="currentColor" />
-              CONTACT WHATSAPP
-              <ArrowUpRight size={20} />
-            </a>
+            <p>Expliquez ce qui se passe dans le formulaire ci-dessous.</p>
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="form-grid">
+                <label className="field">
+                  <span>Nom</span>
+                  <input type="text" name="name" value={form.name} onChange={handleFieldChange} placeholder="Votre prénom ou nom" />
+                </label>
+                <label className="field">
+                  <span>Téléphone</span>
+                  <input type="tel" name="phone" value={form.phone} onChange={handleFieldChange} placeholder="06 12 34 56 78" />
+                </label>
+                <label className="field full-width">
+                  <span>Type de nuisance</span>
+                  <select name="problemType" value={form.problemType} onChange={handleFieldChange}>
+                    <option value="">Sélectionner</option>
+                    {contactOptions.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="field full-width">
+                  <span>Message</span>
+                  <textarea name="message" value={form.message} onChange={handleFieldChange} placeholder="Décrivez le problème, l’endroit et la fréquence d’apparition." rows={5} />
+                </label>
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="primary-action large-action">
+                  <MessageCircle size={21} fill="currentColor" />
+                  Envoyer sur WhatsApp
+                  <ArrowUpRight size={20} />
+                </button>
+                <p className="form-preview">Prévisualisation : {whatsappMessage}</p>
+              </div>
+            </form>
           </div>
           <div className="contact-caption"><PhoneCall size={16} /> CONTACT DIRECT / SANS FORMULAIRE</div>
         </section>
@@ -298,7 +341,7 @@ export default function Home() {
 
       <footer className="site-footer">
         <a className="brand footer-brand" href="#accueil" aria-label="Retour en haut">
-          <img src="/manus-storage/sos-nuisibles-badge_f2d65642.png" alt="" className="brand-mark" />
+          <img src="/images/brand-badge.svg" alt="" className="brand-mark" />
           <span className="brand-copy"><b>SOS</b><strong>NUISIBLES</strong></span>
         </a>
         <div className="footer-meta">

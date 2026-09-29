@@ -1,0 +1,10 @@
+# Depots git imbriques / projets satellites (ne jamais committer de gitlink 160000)
+tambo-connect-html/
+sos-nuisibles-main/
+
+# Artefacts
+node_modules/
+.venv/
+__pycache__/
+*.log
+Thumbs.db

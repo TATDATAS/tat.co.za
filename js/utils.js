@@ -57,6 +57,7 @@ window.Utils = {
         email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
         name: /^[a-zA-Z\s'-]{2,}$/,
         phone: /^[0-9\s\(\)-]+$/,
+        money: /^\d{1,9}$/,
     },
 
     /**
@@ -100,5 +101,21 @@ window.Utils = {
                 inputElement.style.borderColor = neutralColor;
             }
         });
+    },
+
+    setupNumericInput(inputElement, options = {}) {
+    if (!inputElement) return;
+    const maxDigits = options.maxDigits ?? 9;
+    const decimals = options.decimals ?? 0;
+    inputElement.addEventListener('input', () => {
+        const cleaned = this._normalizeNumber(inputElement.value, maxDigits, decimals);
+        if (cleaned !== inputElement.value) inputElement.value = cleaned;
+    });
+    },
+    _normalizeNumber(value, maxDigits, decimals) {
+        let v = value.replace(/[^\d.,]/g, '').replace(/,/g, '.');   // colle "4 500 €" -> "4500"
+        if (decimals === 0) return (v.replace(/\./g, '')).slice(0, maxDigits);
+        const [i = '', d = ''] = v.split('.');
+        return d ? `${i.slice(0, maxDigits)}.${d.slice(0, decimals)}` : i.slice(0, maxDigits);
     },
 };

@@ -123,9 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
         cardObserver.observe(card);
     });
 
-    // Rétablissement du calendrier dynamique (Flatpickr)
-    if (typeof flatpickr !== 'undefined') {
-        const fp = flatpickr("#contact-date", {
+    // ------------------------------------------------------------------
+    // Formulaire B2B unique "Request a DMC Proposal" (Objectif 65)
+    // Un seul formulaire, un seul payload, un seul point d'envoi.
+    // ------------------------------------------------------------------
+    const dateInput = document.getElementById('dmc-date');
+    const dateFormatSelect = document.getElementById('dmc-date-format');
+    let datePicker = null;
+
+    if (typeof flatpickr !== 'undefined' && dateInput) {
+        datePicker = flatpickr(dateInput, {
             locale: "fr",
             mode: "range",
             dateFormat: "d/m/Y",
@@ -133,12 +140,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.getElementById('calendar-icon-trigger')?.addEventListener('click', () => {
-            fp.open();
+            datePicker.open();
+        });
+
+        // Le selecteur FR/UK/US pilote reellement le format affiche
+        dateFormatSelect?.addEventListener('change', () => {
+            const formats = { 'fr-FR': 'd/m/Y', 'en-GB': 'd/m/Y', 'en-US': 'm/d/Y' };
+            const locales = { 'fr-FR': 'fr', 'en-GB': 'en', 'en-US': 'en' };
+            datePicker.set('dateFormat', formats[dateFormatSelect.value] || 'd/m/Y');
+            datePicker.l10n.useLocale(locales[dateFormatSelect.value] || 'fr');
+            console.log(`[DMC Form] Format de date: ${dateFormatSelect.value}`);
         });
     }
 
-    const prefixSelect = document.getElementById('contact-country-prefix');
-    const phoneInput = document.getElementById('contact-phone');
+    const prefixSelect = document.getElementById('dmc-prefix');
+    const phoneInput = document.getElementById('dmc-phone');
 
     const updatePlaceholder = () => {
         if (phoneInput && prefixSelect) {
@@ -161,175 +177,150 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePlaceholder();
 
     /**
-     * Validation finale lors de la soumission
+     * Validation finale et envoi du formulaire B2B unifie
      */
-    const contactForm = document.getElementById('contactForm'); // #contactForm
-    if (contactForm && typeof Utils !== 'undefined') {
-        contactForm.addEventListener('submit', async (e) => {
+    const dmcForm = document.getElementById('dmcForm');
+    const feedback = document.getElementById('dmc-feedback');
+    const showFeedback = (text, type = 'success') => {
+        if (!feedback) return;
+        feedback.textContent = text;
+        feedback.className = `message ${type}`;
+        feedback.hidden = false;
+        feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    const hideFeedback = () => { if (feedback) feedback.hidden = true; };
+
+    if (dmcForm && typeof Utils !== 'undefined') {
+        const fields = {
+            company: document.getElementById('dmc-company'),
+            contact: document.getElementById('dmc-name'),
+            email: document.getElementById('dmc-email'),
+            location: document.getElementById('dmc-location'),
+            proType: document.getElementById('dmc-pro-type'),
+            profile: document.getElementById('dmc-profile'),
+            pax: document.getElementById('dmc-pax'),
+            budget: document.getElementById('dmc-budget'),
+            currency: document.getElementById('dmc-currency'),
+            message: document.getElementById('dmc-message')
+        };
+
+        // Utils.regex.name est ASCII-only: il refuserait une raison sociale avec
+        // chiffres/accents ou un prenom type "Elodie". On utilise des patterns dedies.
+        const COMPANY_REGEX = /^[\p{L}\p{N}][\p{L}\p{N}'’&.,()+\- ]{1,}$/u;
+        const NAME_REGEX = /^[\p{L}][\p{L}\s'’-]{1,}$/u;
+
+        const checks = [
+            { el: fields.company, test: (v) => COMPANY_REGEX.test(v.trim()), label: 'Company / Agency' },
+            { el: fields.contact, test: (v) => NAME_REGEX.test(v.trim()), label: 'Contact Name' },
+            { el: fields.email, test: (v) => Utils.regex.email.test(v.trim()), label: 'Business Email' },
+            { el: fields.location, test: (v) => v.trim().length >= 2, label: 'Company Location' },
+            { el: phoneInput, test: (v) => v.length > 5, label: 'Phone' },
+            { el: fields.budget, test: (v) => v.trim() === '' || Utils.regex.money.test(v.trim()), label: 'Indicative Budget' }
+        ];
+
+        dmcForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log('[Form] Soumission du formulaire de contact interceptée.');
+            hideFeedback();
+            console.log('[DMC Form] Soumission du formulaire B2B unifie interceptee.');
 
-            // 1. Récupération et validation des données
-            const nameInput = document.getElementById('contact-name');
-            const emailInput = document.getElementById('contact-email');
-            const dateInput = document.getElementById('contact-date');
-            const messageInput = document.getElementById('contact-msg');
+            // 1. Validation (bordure rouge sur les champs fautifs)
+            const invalidLabels = [];
+            checks.forEach((check) => {
+                if (!check.el) return;
+                const ok = check.test(check.el.value || '');
+                check.el.style.borderColor = ok ? 'rgba(255, 255, 255, 0.1)' : '#E74C3C';
+                if (!ok) invalidLabels.push(check.label);
+            });
 
-            const isValidName = Utils.regex.name.test(nameInput.value);
-            const isValidEmail = Utils.regex.email.test(emailInput.value);
-            const isValidPhone = phoneInput.value.length > 5; // Validation simple
-
-            if (!isValidName || !isValidEmail || !isValidPhone) {
-                console.error('[Form] Validation échouée. Veuillez vérifier les champs.');
-                // Idéalement, afficher un message d'erreur plus global ici.
-                if (!isValidName) nameInput.style.borderColor = "#E74C3C";
-                if (!isValidEmail) emailInput.style.borderColor = "#E74C3C";
-                if (!isValidPhone) phoneInput.style.borderColor = "#E74C3C";
+            if (invalidLabels.length > 0) {
+                console.error('[DMC Form] Validation echouee pour:', invalidLabels.join(', '));
+                alert(`Please check the following field(s): ${invalidLabels.join(', ')}.`);
                 return;
             }
 
-            // 2. Construction du payload pour le backend
-            const formData = {
-                name: nameInput.value,
-                email: emailInput.value,
-                phone: `${prefixSelect.value} ${phoneInput.value}`,
-                travel_dates: dateInput.value,
-                message: messageInput.value,
-                source: 'tat.co.za' // Traçabilité
+            // 2. Construction du payload unique pour le backend TATBooker
+            const payload = {
+                name: fields.company.value.trim(),
+                contact: fields.contact.value.trim(),
+                email: fields.email.value.trim(),
+                phone: `${prefixSelect ? prefixSelect.value : ''} ${phoneInput.value}`.trim(),
+                locality: fields.location.value.trim(),
+                pro_type: fields.proType ? fields.proType.value : '',
+                travel_profile: fields.profile ? fields.profile.value : '',
+                pax: fields.pax ? fields.pax.value : '',
+                travel_dates: dateInput ? dateInput.value : '',
+                budget_per_person: fields.budget ? fields.budget.value.trim() : '',
+                budget_currency:   fields.currency ? fields.currency.value : '',
+                message: fields.message ? fields.message.value.trim() : '',
+                source: 'tat.co.za',
+                type: 'Partenaire'
             };
 
-            console.log('[Form] Données prêtes à être envoyées:', formData);
+            console.log('[DMC Form] Données prêtes à être envoyées:', payload);
 
             // 3. Envoi via le bridge pywebview
+            const submitBtn = dmcForm.querySelector('button[type="submit"]');
             if (window.pywebview && window.pywebview.api) {
-                try {
-                    await window.pywebview.api.execute('prospect', 'handle_web_lead', formData);
-                    console.log('[Form] Lead envoyé avec succès au backend TATBooker.');
-                    alert('Merci ! Votre demande a bien été envoyée. Nous vous recontacterons bientôt.');
-                    contactForm.reset();
-                    // Réinitialiser les bordures des champs
-                    [nameInput, emailInput, phoneInput].forEach(input => input.style.borderColor = 'rgba(255, 255, 255, 0.1)');
-                } catch (error) {
-                    console.error('[Form] Erreur lors de l\'envoi du lead:', error);
-                    alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Sending...';
                 }
-            } else {
-                console.warn('[Form] Contexte hors TATBooker. Affichage des données en console uniquement.');
-                alert('Ce formulaire est actif uniquement dans l\'application TATBooker.\nDonnées (simulées) :\n' + JSON.stringify(formData, null, 2));
-            }
-        });
-    }
-
-    // Initialisation de la validation sur les champs statiques
-    Utils.setupVisualValidation(document.getElementById('contact-name'), 'name');
-    Utils.setupVisualValidation(document.getElementById('contact-email'), 'email');
-    Utils.setupVisualValidation(document.getElementById('contact-phone'), 'phone');
-
-    /**
-     * Formulaire Partenaire (Génération dynamique et validation)
-     */
-    const editModeToggle = document.getElementById('edit-mode-toggle');
-    const dynamicFormGrid = document.getElementById('dynamicFormGrid');
-    const resetBtn = document.getElementById('partner-reset-btn');
-    const partnerFormFooter = document.getElementById('partner-form-footer');
-
-    const partnerFields = [
-        { id: 'partner-company', label: 'Nom de l\'agence', type: 'text', validation: 'name', placeholder: 'Wild Safari Co.' },
-        { id: 'partner-email', label: 'Email Pro', type: 'email', validation: 'email', placeholder: 'partner@safari.za' },
-        { id: 'partner-phone', label: 'Téléphone Pro', type: 'tel', validation: 'phone', placeholder: '021 555 ...' }
-    ];
-
-    if (editModeToggle && dynamicFormGrid) {
-        editModeToggle.addEventListener('change', () => {
-            if (editModeToggle.checked) {
-                console.log('[Partner] Activation du mode partenaire.');
-                dynamicFormGrid.style.display = 'grid';
-                if (partnerFormFooter) partnerFormFooter.style.display = 'flex';
-                if (resetBtn) resetBtn.style.display = 'inline-flex';
-                // On génère les champs uniquement à la première activation
-                if (dynamicFormGrid.children.length === 0) {
-                    partnerFields.forEach(field => {
-                        const fieldDiv = document.createElement('div');
-                        fieldDiv.className = 'field';
-                        fieldDiv.innerHTML = `
-                            <label for="${field.id}" class="field-label">${field.label}</label>
-                            <input type="${field.type}" id="${field.id}" class="field-value" placeholder="${field.placeholder}">
-                        `;
-                        dynamicFormGrid.appendChild(fieldDiv);
-                        // Application immédiate de la validation sur le nouveau champ
-                        Utils.setupVisualValidation(fieldDiv.querySelector('input'), field.validation);
+                try {
+                    const response = await window.pywebview.api.execute('prospect', 'handle_web_lead', payload);
+                    if (response && response.success === false) {
+                        throw new Error(response.error || 'The backend rejected the request.');
+                    }
+                    console.log('[DMC Form] Lead envoyé avec succès au backend TATBooker:', response);
+                    dmcForm.reset();
+                    if (datePicker) datePicker.clear();
+                    checks.forEach((check) => {
+                        if (check.el) check.el.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                     });
-                }
-            } else {
-                dynamicFormGrid.style.display = 'none';
-                if (partnerFormFooter) partnerFormFooter.style.display = 'none';
-                if (resetBtn) resetBtn.style.display = 'none';
-            }
-        });
-
-        if (resetBtn) {
-            resetBtn.addEventListener('click', () => {
-                const inputs = dynamicFormGrid.querySelectorAll('input');
-                inputs.forEach(input => {
-                    input.value = '';
-                    // Réinitialisation de la bordure (état neutre défini dans setupVisualValidation)
-                    input.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                });
-                console.log('[PartnerForm] Champs réinitialisés.');
-            });
-        }
-    }
-    
-    const partnerForm = document.getElementById('partnerForm');
-    if (partnerForm && typeof Utils !== 'undefined') {
-        partnerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            console.log('[PartnerForm] Soumission du formulaire partenaire interceptée.');
-
-            const companyInput = document.getElementById('partner-company');
-            const emailInput = document.getElementById('partner-email');
-            const phoneInput = document.getElementById('partner-phone');
-
-            const isValidCompany = companyInput && Utils.regex.name.test(companyInput.value);
-            const isValidEmail = emailInput && Utils.regex.email.test(emailInput.value);
-            const isValidPhone = phoneInput && phoneInput.value.length > 5;
-
-            if (!isValidCompany || !isValidEmail || !isValidPhone) {
-                console.error('[PartnerForm] Validation échouée.');
-                if (!isValidCompany) companyInput.style.borderColor = "#E74C3C";
-                if (!isValidEmail) emailInput.style.borderColor = "#E74C3C";
-                if (!isValidPhone) phoneInput.style.borderColor = "#E74C3C";
-                return;
-            }
-
-            const formData = {
-                name: companyInput.value,
-                email: emailInput.value,
-                phone: phoneInput.value,
-                message: "Demande de partenariat depuis le site vitrine.",
-                source: 'tat.co.za',
-                type: 'Partenaire' // Pour la classification dans le CRM
-            };
-
-            console.log('[PartnerForm] Données prêtes à être envoyées:', formData);
-
-            if (window.pywebview && window.pywebview.api) {
-                try {
-                    await window.pywebview.api.execute('prospect', 'handle_web_lead', formData);
-                    console.log('[PartnerForm] Lead partenaire envoyé avec succès au backend.');
-                    alert('Merci pour votre intérêt ! Votre demande de partenariat a bien été envoyée.');
-                    partnerForm.reset();
-                    [companyInput, emailInput, phoneInput].forEach(input => input.style.borderColor = 'rgba(255, 255, 255, 0.1)');
+                    showFeedback('Thank you for your request');
                 } catch (error) {
-                    console.error('[PartnerForm] Erreur lors de l\'envoi du lead:', error);
-                    alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+                    console.error('[DMC Form] Erreur lors de l\'envoi du lead:', error);
+                    alert('An error occurred while sending your request. Please try again later or write to contact@tambo.be.');
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Send my brief';
+                    }
                 }
             } else {
-                console.warn('[PartnerForm] Contexte hors TATBooker. Affichage des données en console uniquement.');
-                alert('Ce formulaire est actif uniquement dans l\'application TATBooker.\nDonnées (simulées) :\n' + JSON.stringify(formData, null, 2));
+                console.warn('[DMC Form] Contexte hors TATBooker. Affichage des données en console uniquement.');
+                alert('This form is active inside the TATBooker app.\nData (simulated):\n' + JSON.stringify(payload, null, 2));
             }
         });
+
+        // Validation visuelle en temps reel. Utils.regex.name etant ASCII-only,
+        // 'company' et 'contact' utilisent leurs propres patterns dedies.
+        dmcForm.addEventListener('input', hideFeedback);
+        const liveValidate = (el, regex) => {
+            if (!el) return;
+            el.addEventListener('input', () => {
+                const value = el.value.trim();
+                if (value.length === 0) {
+                    el.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    return;
+                }
+                el.style.borderColor = regex.test(value) ? '#2ECC71' : '#E74C3C';
+            });
+            el.addEventListener('blur', () => {
+                if (el.value.trim().length === 0) el.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            });
+        };
+
+        liveValidate(fields.company, COMPANY_REGEX);
+        liveValidate(fields.contact, NAME_REGEX);
+        Utils.setupVisualValidation(fields.email, 'email');
+        Utils.setupVisualValidation(phoneInput, 'phone');
+        Utils.setupNumericInput(fields.budget, { decimals: 0, maxDigits: 9 });
+        Utils.setupVisualValidation(fields.budget, 'money');
     }
+
+    // NOTE: l'ancien formulaire "Devenir partenaire" a ete fusionne dans le
+    // formulaire B2B unique #dmcForm. Le toggle, la generation dynamique de
+    // champs et le bouton de reset ne sont plus utilises.
 
     // Initialisation du Weather Simulator s'il est présent
     if (typeof PaletteEngine !== 'undefined') {

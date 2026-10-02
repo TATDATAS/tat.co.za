@@ -73,6 +73,91 @@
     color: #FFE3B5;
 }
 
+.lang-switcher {
+    position: relative;
+    flex-shrink: 0;
+    margin-left: auto;
+    z-index: 20;
+}
+
+.lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid rgba(255, 245, 225, 0.35);
+    border-radius: 999px;
+    background: rgba(22, 20, 18, 0.25);
+    color: #FEF3E2;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lang-toggle:hover,
+.lang-toggle:focus-visible {
+    border-color: #FBBA6C;
+    outline: none;
+}
+
+.lang-arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.lang-switcher.is-open .lang-arrow {
+    transform: rotate(180deg);
+}
+
+.lang-menu,
+.lang-menu[hidden] {
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 0.55rem);
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 5rem;
+    margin: 0;
+    padding: 0.35rem;
+    list-style: none;
+    border: 1px solid rgba(255, 220, 150, 0.35);
+    border-radius: 0.85rem;
+    background: rgba(22, 20, 18, 0.96);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.lang-menu[hidden] {
+    display: none;
+}
+
+.lang-option {
+    display: block;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.55rem;
+    color: #FEF3E2;
+    font-size: 0.82rem;
+    text-align: center;
+    text-decoration: none;
+}
+
+.lang-option:hover,
+.lang-option:focus-visible,
+.lang-option.active {
+    background: rgba(255, 215, 150, 0.14);
+    color: #FFD89A;
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .lang-switcher {
+        align-self: flex-end;
+        margin-top: -0.5rem;
+    }
+}
+
 /* GRILLE DE CARTES GLASS */
 .glass-card {
     background: rgba(22, 20, 18, 0.25);
@@ -107,7 +192,8 @@
     margin: 0 0 2rem;
 }
 
-.dmc-glass-card .section-title {
+.dmc-glass-card .section-title,
+.contact-section .section-title {
     margin-bottom: 0.5rem;
     font-size: clamp(1.6rem, 2vw, 2.2rem);
     text-transform: uppercase;
@@ -115,7 +201,8 @@
     color: #F8E8C9;
 }
 
-.dmc-glass-card .section-subtitle {
+.dmc-glass-card .section-subtitle,
+.contact-section .section-subtitle {
     color: rgba(245, 235, 220, 0.85);
     font-size: 1rem;
     line-height: 1.6;
@@ -210,21 +297,31 @@
 }
 
 .icon-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.7rem;
     text-align: center;
-    height: 130px;
-    min-height: 130px;
-    max-height: 130px;
-    padding: 0.8rem 0.6rem;
+    aspect-ratio: 1;
+    min-height: 150px;
+    padding: 0;
     box-sizing: border-box;
     border-radius: 1.1rem;
+    overflow: hidden;
+    isolation: isolate;
     background: rgba(255, 248, 235, 0.04);
     border: 1px solid rgba(255, 215, 150, 0.16);
     transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.icon-card::after {
+    content: "";
+    position: absolute;
+    inset: 35% 0 0;
+    background: linear-gradient(to bottom, transparent, rgba(10, 9, 8, 0.82));
+    pointer-events: none;
+    z-index: 1;
 }
 
 .icon-card:hover {
@@ -234,17 +331,24 @@
 }
 
 .icon-card img {
-    width: 98px;
-    height: 98px;
-    flex-shrink: 0;
-    object-fit: contain;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
     filter: none;
 }
 
 .icon-card .label {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.75rem;
+    left: 0.6rem;
+    z-index: 2;
     font-size: 0.72rem;
     line-height: 1.4;
-    color: #F8E6C3;
+    color: #FFF5E6;
     font-weight: 500;
 }
 

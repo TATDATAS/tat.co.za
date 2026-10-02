@@ -30,6 +30,33 @@ window.SettingsManager = {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('[Main] DOMContentLoaded déclenché');
     console.log('[Main] Initialisation de l\'application TATBooker...');
+
+    const langSwitcher = document.getElementById('langSwitcher');
+    const langToggle = langSwitcher?.querySelector('.lang-toggle');
+    const langMenu = langSwitcher?.querySelector('.lang-menu');
+
+    if (langSwitcher && langToggle && langMenu) {
+        const setLanguageMenuOpen = (isOpen) => {
+            langSwitcher.classList.toggle('is-open', isOpen);
+            langToggle.setAttribute('aria-expanded', String(isOpen));
+            langMenu.hidden = !isOpen;
+        };
+
+        langToggle.addEventListener('click', () => {
+            setLanguageMenuOpen(langToggle.getAttribute('aria-expanded') !== 'true');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!langSwitcher.contains(event.target)) setLanguageMenuOpen(false);
+        });
+
+        langSwitcher.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                setLanguageMenuOpen(false);
+                langToggle.focus();
+            }
+        });
+    }
     
     // Image de secours si une ressource spécifique est introuvable
     const DEFAULT_DEST_IMAGE = 'assets/images/fallback-safari.jpg';

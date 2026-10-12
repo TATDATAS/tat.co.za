@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <base href="../">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="alternate" hreflang="en" href="https://tambo.be/index.html">
+    <link rel="alternate" hreflang="fr" href="https://tambo.be/Fr/index-fr.html">
+    <link rel="alternate" hreflang="nl" href="https://tambo.be/Nl/index-nl.html">
+    <link rel="alternate" hreflang="x-default" href="https://tambo.be/index.html">
+    <meta name="description" content="Tambo Adventure Travel - Specialist in safari's op maat en unieke ervaringen in Zuid-Afrika.">
+    <title>TATBooker | Tambo Adventure Travel - Safari's & ervaringen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/glassmorphism.css">
+    <link rel="stylesheet" href="./css/palettes.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+    <link rel="icon" type="image/png" href="logo tat coloured.png">
+</head>
+<body>
+
+<!-- particules sahariennes -->
+<div id="particles-container"></div>
+
+<div class="app-container">
+    <!-- Glass navigation -->
+    <nav class="glass-nav">
+        <div class="logo-area">
+            <img src="logo tat coloured.png" alt="Logo Tambo Adventure Travel" class="logo-img" width="50" height="50">
+            <h1>TAMBO ADVENTURE TRAVEL</h1>
+            <p>DMC gevestigd in België • Actief in Zuid-Afrika</p>
+        </div>
+        <div class="lang-switcher" id="langSwitcher">
+            <button class="lang-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="Taal wijzigen">
+                <span class="lang-current">NL</span>
+                <span class="lang-arrow" aria-hidden="true">↑</span>
+            </button>
+            <ul class="lang-menu" id="langMenu" role="menu" hidden>
+                <li role="none">
+                    <a href="index.html" role="menuitem" class="lang-option" lang="en">EN</a>
+                </li>
+                <li role="none">
+                    <a href="Fr/index-fr.html" role="menuitem" class="lang-option" lang="fr">FR</a>
+                </li>
+                <li role="none">
+                    <a href="Nl/index-nl.html" role="menuitem" class="lang-option active" lang="nl" aria-current="page">NL</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero section blend Glassmorphism + couleurs terre -->
+    <div class="hero-section">
+        <div class="glass-card card-welcome">
+            <h2>Tambo Adventure Travel <span class="highlight">is een Destination Management Company gespecialiseerd in reizen op maat, safari's en lokale dienstverlening in Zuid-Afrika.</span><br>...</h2>
+            <p class="hero-description">Onze missie is reisprofessionals te helpen uitzonderlijke reizen door Zuid-Afrika te creëren met betrouwbare lokale expertise, programma's op maat en vlekkeloze lokale dienstverlening.</p>
+            <div class="hero-badges-area">
+                <i class="fas fa-cloud-moon icon-sun"></i>
+                <i class="fas fa-mountain-sun icon-mountain"></i>
+            </div>
+        </div>
+
+        <div class="glass-card card-stats">
+            <h2>Waarom samenwerken met Tambo</h2>
+            <hr>
+            <ul class="why-tambo-list">
+                <li><strong>Lokale expertise:</strong> Operationele kennis en bestemmingskennis vanuit Zuid-Afrika.</li>
+                <li><strong>B2B-partnerschap:</strong> We werken samen met reisbureaus, touroperators en reisprofessionals.</li>
+                <li><strong>Reizen op maat:</strong> Programma's afgestemd op het klantprofiel, de reisstijl en het budget.</li>
+                <li><strong>Betrouwbare lokale dienstverlening:</strong> Transfers, vervoer, gidsen, excursies en lokale coördinatie.</li>
+                <li><strong>Geselecteerd netwerk van leveranciers:</strong> Hotels, lodges, safari-accommodaties en aanbieders van ervaringen.</li>
+                <li><strong>Ondersteuning ter plaatse:</strong> Operationele ondersteuning vóór en tijdens de reis.</li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="dmc-glass-card">
+
+        <h2 class="section-title">UW DMC-PARTNER IN ZUID-AFRIKA</h2>
+        <p class="section-subtitle">
+            Wij helpen professionals reizen op maat in Zuid-Afrika te ontwerpen en te organiseren.
+        </p>
+
+        <div class="dmc-subcards">
+            <div class="subcard">
+                <h3>MET WIE WE SAMENWERKEN</h3>
+                <div class="subcard-divider"></div>
+                <p class="subcard-copy">Betrouwbare reisprofessionals en specialisten die samenwerken aan reizen op maat in Zuid-Afrika.</p>
+
+                <div class="icon-grid">
+                    <div class="icon-card">
+                        <img src="assets/icons/travel-agencies.svg" alt="Reisbureaus">
+                        <span class="label">Reisbureaus</span>
+                    </div>
+
+                    <div class="icon-card">
+                        <img src="assets/icons/tour-operator.svg" alt="Touroperators">
+                        <span class="label">Touroperators</span>
+                    </div>
+
+                    <div class="icon-card">
+                        <img src="assets/icons/travel-advisor.svg" alt="Reisadviseurs">
+                        <span class="label">Reisadviseurs</span>
+                    </div>
+
+                    <div class="icon-card">
+                        <img src="assets/icons/luxury & tailor-made specialist.svg" alt="Luxe en reizen op maat">
+                        <span class="label">Luxe en reizen op maat</span>
+                    </div>
+
+                    <div class="icon-card">
+                        <img src="assets/icons/group-travel-specialists.svg" alt="Specialisten in groepsreizen">
+                        <span class="label">Specialisten in groepsreizen</span>
+                    </div>
+
+                    <div class="icon-card">
+                        <img src="assets/icons/corporate & incentive specialists.svg" alt="Bedrijfs- en incentive-reizen">
+                        <span class="label">Bedrijfs- en incentive-reizen</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subcard">
+                <h3>WAT WE REGELEN</h3>
+                <div class="subcard-divider"></div>
+                <p class="subcard-copy">Complete bestemmingsdiensten, van het ontwerpen van routes tot lokale uitvoering.</p>
+
+                <div class="icon-grid">
+                    <div class="icon-card"><img src="assets/icons/itinerary-dsign.svg" alt="Routeplanning"><span class="label">Routeplanning</span></div>
+                    <div class="icon-card"><img src="assets/icons/accomodation-sourcing.svg" alt="Accommodatie"><span class="label">Accommodatie</span></div>
+                    <div class="icon-card"><img src="assets/icons/safari-arrangements.svg" alt="Safari's organiseren"><span class="label">Safari's organiseren</span></div>
+                    <div class="icon-card"><img src="assets/icons/private-transfers.svg" alt="Privétransfers"><span class="label">Privétransfers</span></div>
+                    <div class="icon-card"><img src="assets/icons/guides-&-drivers.svg" alt="Gidsen en chauffeurs"><span class="label">Gidsen en chauffeurs</span></div>
+                    <div class="icon-card"><img src="assets/icons/excursions.svg" alt="Excursies"><span class="label">Excursies</span></div>
+                    <div class="icon-card"><img src="assets/icons/activities.svg" alt="Activiteiten"><span class="label">Activiteiten</span></div>
+                    <div class="icon-card"><img src="assets/icons/supplier-coordination.svg" alt="Coördinatie van leveranciers"><span class="label">Coördinatie van leveranciers</span></div>
+                    <div class="icon-card"><img src="assets/icons/ground.svg" alt="Lokale ondersteuning"><span class="label">Lokale ondersteuning</span></div>
+                    <div class="icon-card"><img src="assets/icons/Local-assistance.svg" alt="Lokale assistentie"><span class="label">Lokale assistentie</span></div>
+                </div>
+            </div>
+
+            <div class="subcard">
+                <h3>HOE HET WERKT</h3>
+                <div class="subcard-divider"></div>
+                <p class="subcard-copy">
+                    <span class="subcard-line">U stuurt ons uw wensen</span>
+                    <span class="subcard-detail">Klantprofiel, data, budget en reiswensen.</span>
+                    <span class="subcard-line">Wij ontwerpen de reis</span>
+                    <span class="subcard-detail">Route, accommodatie, safari's, activiteiten en logistiek.</span>
+                    <span class="subcard-line">Wij coördineren de bestemming</span>
+                    <span class="subcard-detail">Leveranciers, transfers, gidsen en lokale uitvoering.</span>
+                    <span class="subcard-line">Wij ondersteunen de reis ter plaatse</span>
+                    <span class="subcard-detail">Betrouwbare lokale hulp vóór en tijdens de reis.</span>
+                </p>
+
+                <div class="icon-grid">
+                    <div class="icon-card"><img src="assets/icons/process.svg" alt="Proces"><span class="label">Heldere samenwerking</span></div>
+                    <div class="icon-card"><img src="assets/icons/support.svg" alt="Ondersteuning"><span class="label">Coördinatie vóór de reis</span></div>
+                    <div class="icon-card"><img src="assets/icons/operations.svg" alt="Uitvoering"><span class="label">Lokale uitvoering</span></div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="destinations-grid" id="destinationsGrid">
+        <!-- cartes via js -->
+    </div>
+
+    <!-- Formulaire B2B unique : Request a DMC Proposal -->
+    <section class="contact-section" id="contact-section">
+        <div class="glass-card" style="margin-bottom: 2rem; padding: 2rem;">
+            <h2 class="section-title">Vraag een DMC-voorstel aan</h2>
+            <p class="section-subtitle">Deel de reiswensen van uw klant met ons en ons team stelt een voorstel op maat voor uw reis door Zuid-Afrika op.
+            </p>
+            <form id="dmcForm" novalidate>
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="dmc-company" class="field-label">Bedrijf / reisbureau</label>
+                        <input type="text" id="dmc-company" class="field-value" placeholder="Wild Safari Co.">
+                        <span class="glass-tooltip">Naam van uw bedrijf of reisbureau</span>
+                    </div>
+                    <div class="field">
+                        <label for="dmc-location" class="field-label">Locatie van het bedrijf</label>
+                        <input type="text" id="dmc-location" class="field-value" placeholder="Stad, land">
+                        <span class="glass-tooltip">Waar uw reisbureau gevestigd is</span>
+                    </div>
+                    <div class="field">
+                        <label for="dmc-name" class="field-label">Contactpersoon</label>
+                        <input type="text" id="dmc-name" class="field-value" placeholder="Uw naam...">
+                    </div>
+                    <div class="field">
+                        <label for="dmc-email" class="field-label">Zakelijk e-mailadres</label>
+                        <input type="email" id="dmc-email" class="field-value" placeholder="your@agency.com">
+                    </div>
+                    <div class="field full-width">
+                        <label for="dmc-phone" class="field-label">Telefoon</label>
+                        <div style="display: flex; width: 100%; gap: 8px;">
+                            <select id="dmc-prefix" class="field-value country-prefix">
+                            <option value="+33">🇫🇷 +33</option>
+                            <option value="+27">🇿🇦 +27</option>
+                            <option value="+254">🇰🇪 +254</option>
+                            <option value="+255">🇹🇿 +255</option>
+                            <option value="+263">🇿🇼 +263</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+228">🇹🇬 +228</option>
+                            <option value="+241">🇬🇦 +241</option>
+                            <option value="+243">🇨🇩 +243</option>
+                            <option value="+242">🇨🇬 +242</option>
+                            <option value="+257">🇧🇮 +257</option>
+                            <option value="+250">🇷🇼 +250</option>
+                            <option value="+229">🇧🇯 +229</option>
+                            <option value="+226">🇧🇫 +226</option>
+                            <option value="+223">🇲🇱 +223</option>
+                            <option value="+221">🇸🇳 +221</option>
+                            <option value="+225">🇨🇮 +225</option>
+                            <option value="+212">🇲🇦 +212</option>
+                            <option value="+222">🇲🇷 +222</option>
+                            <option value="+213">🇩🇿 +213</option>
+                            <option value="+216">🇹🇳 +216</option>
+                            <option value="+971">🇦🇪 +971</option>
+                            <option value="+974">🇶🇦 +974</option>
+                            <option value="+20">🇪🇬 +20</option>
+                            <option value="+32">🇧🇪 +32</option>
+                            <option value="+31" selected>🇳🇱 +31</option>
+                            <option value="+49">🇩🇪 +49</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+39">🇮🇹 +39</option>
+                            <option value="+352">🇱🇺 +352</option>
+                            <option value="+41">🇨🇭 +41</option>
+                            <option value="+45">🇩🇰 +45</option>
+                            <option value="+46">🇸🇪 +46</option>
+                            <option value="+47">🇳🇴 +47</option>
+                            <option value="+48">🇵🇱 +48</option>
+                            <option value="+351">🇵🇹 +351</option>
+                        </select>
+                        <input type="tel" id="dmc-phone" class="field-value" style="flex: 1;" placeholder="6 12 ...">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="dmc-pro-type" class="field-label">Type reisprofessional</label>
+                    <select id="dmc-pro-type" class="field-value">
+                        <option value="Travel Agency">Reisbureau</option>
+                        <option value="Tour Operator">Touroperator</option>
+                        <option value="Independent Travel Advisor">Onafhankelijk reisadviseur</option>
+                        <option value="Luxury &amp; Tailor-made Specialist">Specialist in luxe en reizen op maat</option>
+                        <option value="Group Travel Specialist">Specialist in groepsreizen</option>
+                        <option value="Corporate &amp; Incentive">Bedrijfs- en incentive-reizen</option>
+                        <option value="Other">Anders</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="dmc-profile" class="field-label">Klantprofiel</label>
+                    <select id="dmc-profile" class="field-value">
+                        <option value="Couple">Koppel</option>
+                        <option value="Family">Gezin</option>
+                        <option value="Small Group">Kleine groep</option>
+                        <option value="Group">Groep</option>
+                        <option value="Corporate &amp; Incentive">Bedrijfs- en incentive-reizen</option>
+                        <option value="Individual FIT">Individuele reiziger (FIT)</option>
+                        <option value="Other">Anders</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="dmc-pax" class="field-label">Aantal reizigers</label>
+                    <input type="number" id="dmc-pax" class="field-value" min="1" placeholder="bijv. 8">
+                </div>
+                <div class="field">
+                        <label for="dmc-budget" class="field-label">Richtbudget per persoon</label>
+                        <div style="display: flex; width: 100%; gap: 8px;">
+                            <select id="dmc-currency" class="field-value currency-select" aria-label="Budgetvaluta">
+                                <option value="EUR" selected>€</option>
+                                <option value="USD">$</option>
+                                <option value="GBP">£</option>
+                                <option value="CHF">CHF</option>
+                            </select>
+                            <input type="text" id="dmc-budget" class="field-value" inputmode="numeric" autocomplete="off" placeholder="bijv. 4500">
+                        </div>
+                        <span class="glass-tooltip">Per persoon, alleen cijfers</span>
+                    </div>
+                <div class="field full-width" style="position: relative;">
+                    <label for="dmc-date" class="field-label">Reisperiode</label>
+                    <div style="display: flex; width: 100%; gap: 8px;">
+                        <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                            <i id="calendar-icon-trigger" class="fas fa-calendar-alt" style="position: absolute; left: 12px; color: #F1BF73; font-size: 0.9rem; cursor: pointer; z-index: 10;"></i>
+                            <input type="text" id="dmc-date" class="field-value date-input-padding" placeholder="van DD/MM/JJJJ tot DD/MM/JJJJ" readonly>
+                        </div>
+                        <select id="dmc-date-format" class="field-value date-format">
+                            <option value="nl-NL" selected>NL</option>
+                            <option value="en-GB">UK</option>
+                            <option value="en-US">US</option>
+                        </select>
+                    </div>
+                    <span class="glass-tooltip" style="bottom: -25px;">Selecteer de verwachte reisperiode</span>
+                </div>
+            </div>
+            <div class="field full-width" style="margin-bottom: 1.5rem;">
+                <label for="dmc-message" class="field-label">Uw reiswensen</label>
+                <textarea id="dmc-message" class="field-value" style="min-height: 120px; resize: vertical;" placeholder="Bestemmingen, interesses, budget, speciale verzoeken..."></textarea>
+            </div>
+            <div id="dmc-feedback" class="message success" role="status" aria-live="polite" hidden>
+                Bedankt voor uw aanvraag
+            </div>
+            <div class="form-footer">
+                <button type="submit" class="glass-btn">Verstuur mijn aanvraag</button>
+            </div>
+        </form>
+    </div>
+    </section>
+
+    <!-- Le bloc "Devenir partenaire" a ete fusionne dans le formulaire B2B
+         unique #dmcForm ci-dessus (Company, Location, Pro type, Profile, Pax). -->
+
+    <!-- Réseaux sociaux -->
+    <div class="footer-socials">
+        <p class="socials-label">Volg ons</p>
+        <div class="socials-links">
+            <a href="https://www.instagram.com/tambo_adventure" target="_blank" aria-label="Instagram" class="social-btn">
+                <img src="assets/icons/thesvg-color--instagram.svg" alt="Instagram" width="28" height="28">
+                <span>Instagram</span>
+            </a>
+            <a href="https://www.tiktok.com/@tamboadventuretravel" target="_blank" aria-label="TikTok" class="social-btn">
+                <img src="assets/icons/thesvg-color--tiktok-dark.svg" alt="TikTok" width="28" height="28">
+                <span>TikTok</span>
+            </a>
+        </div>
+    </div>
+
+
+    <footer>
+        <!-- Logo -->
+        <img src="logo tat coloured.png" alt="Tambo Adventure Travel logo" class="footer-social" loading="lazy">
+
+        <!-- LIGNE 1 : Mentions légales et liens -->
+        <p class="footer-line footer-legal">
+            Tambo Adventure Travel en de bijbehorende tools zijn exclusief eigendom van Tambo Adventure Travel (Pty) Ltd –
+            <a href="terms.html" class="footer-link">Servicevoorwaarden</a> |
+            <a href="privacy-policy.html" class="footer-link">Privacybeleid</a>
+        </p>
+
+        <!-- LIGNE 2 : Informations de contact -->
+        <p class="footer-line footer-contact">
+            Registration No. 2025/939116/07 |
+            <a href="mailto:contact@tambo.be">contact@tambo.be</a> -
+            <a href="tel:+32492949739">+32492949739</a>
+        </p>
+    </footer>
+</div>
+
+<!-- Bannière de consentement RGPD -->
+<div id="consent-banner" class="consent-banner glass-card">
+    <div class="consent-content">
+        <p>Deze website gebruikt cookies om uw ervaring te verbeteren. Door verder te gaan, gaat u akkoord met ons <a href="privacy-policy.html" target="_blank">privacybeleid</a>.</p>
+    </div>
+    <div class="consent-actions">
+        <button id="consent-accept" class="glass-btn">Accepteren</button>
+        <button id="consent-refuse" class="glass-btn">Weigeren</button>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/nl.js"></script>
+<script type="module" src="./js/palette-engine.js"></script>
+<script type="module" src="./js/weather-simulator.js"></script>
+<script type="module" src="./js/utils.js"></script>
+<script type="module" src="./js/lead-capture.js"></script>
+<script type="module" src="./js/consent-manager.js"></script>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
+<script>console.log('index.html: Fin du chargement du body et des scripts.');</script>

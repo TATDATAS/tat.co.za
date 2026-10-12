@@ -159,8 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let datePicker = null;
 
     if (typeof flatpickr !== 'undefined' && dateInput) {
+        const isDutch = document.documentElement.lang === 'nl';
+        const pageLocale = isDutch ? 'nl' : 'fr';
         datePicker = flatpickr(dateInput, {
-            locale: "fr",
+            locale: pageLocale,
             mode: "range",
             dateFormat: "d/m/Y",
             disableMobile: "true"
@@ -172,8 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Le selecteur FR/UK/US pilote reellement le format affiche
         dateFormatSelect?.addEventListener('change', () => {
-            const formats = { 'fr-FR': 'd/m/Y', 'en-GB': 'd/m/Y', 'en-US': 'm/d/Y' };
-            const locales = { 'fr-FR': 'fr', 'en-GB': 'en', 'en-US': 'en' };
+            const formats = { 'fr-FR': 'd/m/Y', 'nl-NL': 'd/m/Y', 'en-GB': 'd/m/Y', 'en-US': 'm/d/Y' };
+            const locales = { 'fr-FR': 'fr', 'nl-NL': 'nl', 'en-GB': 'en', 'en-US': 'en' };
             datePicker.set('dateFormat', formats[dateFormatSelect.value] || 'd/m/Y');
             datePicker.l10n.useLocale(locales[dateFormatSelect.value] || 'fr');
             console.log(`[DMC Form] Format de date: ${dateFormatSelect.value}`);
@@ -237,12 +239,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const NAME_REGEX = /^[\p{L}][\p{L}\s'’-]{1,}$/u;
 
         const checks = [
-            { el: fields.company, test: (v) => COMPANY_REGEX.test(v.trim()), label: 'Company / Agency' },
-            { el: fields.contact, test: (v) => NAME_REGEX.test(v.trim()), label: 'Contact Name' },
-            { el: fields.email, test: (v) => Utils.regex.email.test(v.trim()), label: 'Business Email' },
-            { el: fields.location, test: (v) => v.trim().length >= 2, label: 'Company Location' },
-            { el: phoneInput, test: (v) => v.length > 5, label: 'Phone' },
-            { el: fields.budget, test: (v) => v.trim() === '' || Utils.regex.money.test(v.trim()), label: 'Indicative Budget' }
+            { el: fields.company, test: (v) => COMPANY_REGEX.test(v.trim()), label: isDutch ? 'Bedrijf / reisbureau' : 'Company / Agency' },
+            { el: fields.contact, test: (v) => NAME_REGEX.test(v.trim()), label: isDutch ? 'Contactpersoon' : 'Contact Name' },
+            { el: fields.email, test: (v) => Utils.regex.email.test(v.trim()), label: isDutch ? 'Zakelijk e-mailadres' : 'Business Email' },
+            { el: fields.location, test: (v) => v.trim().length >= 2, label: isDutch ? 'Locatie van het bedrijf' : 'Company Location' },
+            { el: phoneInput, test: (v) => v.length > 5, label: isDutch ? 'Telefoon' : 'Phone' },
+            { el: fields.budget, test: (v) => v.trim() === '' || Utils.regex.money.test(v.trim()), label: isDutch ? 'Richtbudget' : 'Indicative Budget' }
         ];
 
         dmcForm.addEventListener('submit', async (e) => {
@@ -261,7 +263,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (invalidLabels.length > 0) {
                 console.error('[DMC Form] Validation echouee pour:', invalidLabels.join(', '));
-                alert(`Please check the following field(s): ${invalidLabels.join(', ')}.`);
+                alert(isDutch
+                    ? `Controleer de volgende velden: ${invalidLabels.join(', ')}.`
+                    : `Please check the following field(s): ${invalidLabels.join(', ')}.`);
                 return;
             }
 
@@ -290,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.pywebview && window.pywebview.api) {
                 if (submitBtn) {
                     submitBtn.disabled = true;
-                    submitBtn.textContent = 'Sending...';
+                    submitBtn.textContent = isDutch ? 'Verzenden...' : 'Sending...';
                 }
                 try {
                     const response = await window.pywebview.api.execute('prospect', 'handle_web_lead', payload);
@@ -303,19 +307,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     checks.forEach((check) => {
                         if (check.el) check.el.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                     });
-                    showFeedback('Thank you for your request');
+                    showFeedback(isDutch ? 'Bedankt voor uw aanvraag' : 'Thank you for your request');
                 } catch (error) {
                     console.error('[DMC Form] Erreur lors de l\'envoi du lead:', error);
-                    alert('An error occurred while sending your request. Please try again later or write to contact@tambo.be.');
+                    alert(isDutch
+                        ? 'Er is een fout opgetreden bij het verzenden van uw aanvraag. Probeer het later opnieuw of mail naar contact@tambo.be.'
+                        : 'An error occurred while sending your request. Please try again later or write to contact@tambo.be.');
                 } finally {
                     if (submitBtn) {
                         submitBtn.disabled = false;
-                        submitBtn.textContent = 'Send my brief';
+                        submitBtn.textContent = isDutch ? 'Verstuur mijn aanvraag' : 'Send my brief';
                     }
                 }
             } else {
                 console.warn('[DMC Form] Contexte hors TATBooker. Affichage des données en console uniquement.');
-                alert('This form is active inside the TATBooker app.\nData (simulated):\n' + JSON.stringify(payload, null, 2));
+                alert((isDutch
+                    ? 'Dit formulier werkt binnen de TATBooker-app.\nGegevens (simulatie):\n'
+                    : 'This form is active inside the TATBooker app.\nData (simulated):\n') + JSON.stringify(payload, null, 2));
             }
         });
 

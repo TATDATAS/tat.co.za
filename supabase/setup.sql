@@ -1,32 +1,60 @@
--- 1. Création de la table 'leads' pour stocker les demandes de safari
+-- Lead schema matching the public B2B form payload.
 CREATE TABLE IF NOT EXISTS public.leads (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
     name TEXT NOT NULL,
+    contact TEXT NOT NULL,
     email TEXT NOT NULL,
-    phone TEXT,
-    departure_date DATE NOT NULL,
-    return_date DATE,
+    phone TEXT NOT NULL,
+    locality TEXT NOT NULL,
+    pro_type TEXT,
+    travel_profile TEXT,
+    pax INTEGER,
+    travel_dates TEXT,
+    budget_per_person TEXT,
+    budget_currency TEXT,
     message TEXT,
-    status TEXT DEFAULT 'new' NOT NULL
+    source TEXT NOT NULL DEFAULT 'tat.co.za',
+    type TEXT NOT NULL DEFAULT 'Partenaire',
+    status TEXT NOT NULL DEFAULT 'new'
 );
 
--- 2. Activation de la Row Level Security (RLS)
--- Cela permet de contrôler finement qui peut lire ou écrire dans cette table
+-- Add the form fields when upgrading an existing leads table.
+ALTER TABLE public.leads
+    ADD COLUMN IF NOT EXISTS contact TEXT,
+    ADD COLUMN IF NOT EXISTS locality TEXT,
+    ADD COLUMN IF NOT EXISTS pro_type TEXT,
+    ADD COLUMN IF NOT EXISTS travel_profile TEXT,
+    ADD COLUMN IF NOT EXISTS pax INTEGER,
+    ADD COLUMN IF NOT EXISTS travel_dates TEXT,
+    ADD COLUMN IF NOT EXISTS budget_per_person TEXT,
+    ADD COLUMN IF NOT EXISTS budget_currency TEXT,
+    ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'tat.co.za',
+    ADD COLUMN IF NOT EXISTS type TEXT NOT NULL DEFAULT 'Partenaire';
+
+-- Older schemas required a departure date that this form does not collect.
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'leads'
+          AND column_name = 'departure_date'
+    ) THEN
+        ALTER TABLE public.leads ALTER COLUMN departure_date DROP NOT NULL;
+    END IF;
+END;
+$$;
+
 ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
 
--- 3. Politique d'insertion : Autoriser tout le monde (anonyme ou authentifié)
--- C'est crucial pour que votre formulaire de contact public fonctionne
+DROP POLICY IF EXISTS "Allow public lead submission" ON public.leads;
 CREATE POLICY "Allow public lead submission" 
 ON public.leads 
 FOR INSERT 
 TO anon, authenticated
 WITH CHECK (true);
 
--- 4. Politique de lecture : Restreindre la consultation aux utilisateurs connectés
--- Cela protège les données de vos prospects des regards extérieurs
-CREATE POLICY "Allow authenticated users to view leads" 
-ON public.leads 
-FOR SELECT 
-TO authenticated 
-USING (true);
+-- Do not expose prospect data to every authenticated user.
+DROP POLICY IF EXISTS "Allow authenticated users to view leads" ON public.leads;

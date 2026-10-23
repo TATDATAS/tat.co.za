@@ -3,6 +3,8 @@
  * Gestion de l'affichage dynamique et de l'optimisation des performances
  */
 
+import { captureLead } from './lead-capture.js';
+
 console.log('[Main] Script chargé');
 
 window.SettingsManager = {
@@ -157,9 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateInput = document.getElementById('dmc-date');
     const dateFormatSelect = document.getElementById('dmc-date-format');
     let datePicker = null;
+    const pageLanguage = document.documentElement.lang;
+    const isDutch = pageLanguage === 'nl';
+    const isFrench = pageLanguage === 'fr';
+    const translate = (english, french, dutch) => (
+        isDutch ? dutch : isFrench ? french : english
+    );
 
     if (typeof flatpickr !== 'undefined' && dateInput) {
-        const isDutch = document.documentElement.lang === 'nl';
         const pageLocale = isDutch ? 'nl' : 'fr';
         datePicker = flatpickr(dateInput, {
             locale: pageLocale,
@@ -269,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // 2. Construction du payload unique pour le backend TATBooker
+            // One validated payload is sent to both TATBooker and Supabase.
             const payload = {
                 name: fields.company.value.trim(),
                 contact: fields.contact.value.trim(),
@@ -287,43 +294,77 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: 'Partenaire'
             };
 
-            console.log('[DMC Form] Données prêtes à être envoyées:', payload);
+            console.log('[DMC Form] Form submission started.');
 
-            // 3. Envoi via le bridge pywebview
             const submitBtn = dmcForm.querySelector('button[type="submit"]');
-            if (window.pywebview && window.pywebview.api) {
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = isDutch ? 'Verzenden...' : 'Sending...';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = translate('Sending...', 'Envoi...', 'Verzenden...');
+            }
+
+            const sendToTatBooker = async () => {
+                if (!window.pywebview?.api) {
+                    throw new Error('TATBooker bridge is unavailable.');
                 }
-                try {
-                    const response = await window.pywebview.api.execute('prospect', 'handle_web_lead', payload);
-                    if (response && response.success === false) {
-                        throw new Error(response.error || 'The backend rejected the request.');
-                    }
-                    console.log('[DMC Form] Lead envoyé avec succès au backend TATBooker:', response);
+
+                const response = await window.pywebview.api.execute('prospect', 'handle_web_lead', payload);
+                if (response && response.success === false) {
+                    throw new Error(response.error || 'The backend rejected the request.');
+                }
+            };
+
+            try {
+                const results = await Promise.allSettled([
+                    sendToTatBooker(),
+                    captureLead(payload)
+                ]);
+                const [tatBookerResult, supabaseResult] = results;
+                const tatBookerSucceeded = tatBookerResult.status === 'fulfilled';
+                const supabaseSucceeded = supabaseResult.status === 'fulfilled';
+
+                if (tatBookerSucceeded && supabaseSucceeded) {
+                    console.log('[DMC Form] Lead sent to both destinations.');
                     dmcForm.reset();
                     if (datePicker) datePicker.clear();
                     checks.forEach((check) => {
                         if (check.el) check.el.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                     });
-                    showFeedback(isDutch ? 'Bedankt voor uw aanvraag' : 'Thank you for your request');
-                } catch (error) {
-                    console.error('[DMC Form] Erreur lors de l\'envoi du lead:', error);
-                    alert(isDutch
-                        ? 'Er is een fout opgetreden bij het verzenden van uw aanvraag. Probeer het later opnieuw of mail naar contact@tambo.be.'
-                        : 'An error occurred while sending your request. Please try again later or write to contact@tambo.be.');
-                } finally {
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = isDutch ? 'Verstuur mijn aanvraag' : 'Send my brief';
-                    }
+                    showFeedback(translate(
+                        'Your request was sent to TATBooker and saved in Supabase.',
+                        'Votre demande a été envoyée à TATBooker et enregistrée dans Supabase.',
+                        'Uw aanvraag is naar TATBooker verzonden en in Supabase opgeslagen.'
+                    ));
+                } else if (tatBookerSucceeded || supabaseSucceeded) {
+                    const failedResult = tatBookerSucceeded ? supabaseResult : tatBookerResult;
+                    console.error('[DMC Form] Partial submission failure:', failedResult.reason);
+                    showFeedback(translate(
+                        'Your request was only partially sent. One destination received it; the other failed. Please contact contact@tambo.be before resubmitting to avoid duplicates.',
+                        'Votre demande n’a été transmise qu’en partie. Une destination l’a reçue, l’autre a échoué. Contactez contact@tambo.be avant de la renvoyer pour éviter les doublons.',
+                        'Uw aanvraag is maar gedeeltelijk verzonden. Eén bestemming heeft deze ontvangen; de andere verzending is mislukt. Neem contact op via contact@tambo.be voordat u opnieuw verzendt om duplicaten te voorkomen.'
+                    ), 'warning');
+                } else {
+                    console.error('[DMC Form] Both submission destinations failed:', {
+                        tatBooker: tatBookerResult.reason,
+                        supabase: supabaseResult.reason
+                    });
+                    showFeedback(translate(
+                        'We could not send your request. Please try again later or contact contact@tambo.be.',
+                        'Votre demande n’a pas pu être envoyée. Réessayez plus tard ou contactez contact@tambo.be.',
+                        'Uw aanvraag kon niet worden verzonden. Probeer het later opnieuw of neem contact op via contact@tambo.be.'
+                    ), 'error');
                 }
-            } else {
-                console.warn('[DMC Form] Contexte hors TATBooker. Affichage des données en console uniquement.');
-                alert((isDutch
-                    ? 'Dit formulier werkt binnen de TATBooker-app.\nGegevens (simulatie):\n'
-                    : 'This form is active inside the TATBooker app.\nData (simulated):\n') + JSON.stringify(payload, null, 2));
+            } catch (error) {
+                console.error('[DMC Form] Unexpected submission error:', error);
+                showFeedback(translate(
+                    'An unexpected error prevented your request from being sent. Please contact contact@tambo.be.',
+                    'Une erreur inattendue a empêché l’envoi de votre demande. Contactez contact@tambo.be.',
+                    'Een onverwachte fout heeft het verzenden van uw aanvraag verhinderd. Neem contact op via contact@tambo.be.'
+                ), 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = translate('Send my brief', 'Envoyer mon brief', 'Verstuur mijn aanvraag');
+                }
             }
         });
 

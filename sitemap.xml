@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://tambo.be/</loc>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://tambo.be/" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://tambo.be/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://tambo.be/fr/" />
+        <xhtml:link rel="alternate" hreflang="nl" href="https://tambo.be/nl/" />
+    </url>
+    <url>
+        <loc>https://tambo.be/fr/</loc>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://tambo.be/" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://tambo.be/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://tambo.be/fr/" />
+        <xhtml:link rel="alternate" hreflang="nl" href="https://tambo.be/nl/" />
+    </url>
+    <url>
+        <loc>https://tambo.be/nl/</loc>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://tambo.be/" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://tambo.be/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://tambo.be/fr/" />
+        <xhtml:link rel="alternate" hreflang="nl" href="https://tambo.be/nl/" />
+    </url>
+</urlset>

@@ -59,9 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
-    // Image de secours si une ressource spécifique est introuvable
-    const DEFAULT_DEST_IMAGE = 'assets/images/fallback-safari.jpg';
 
     // Initialisation des moteurs visuels
     if (typeof PaletteEngine !== 'undefined') {
@@ -120,37 +117,44 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Génère dynamiquement les cartes dans la grille avec un état initial masqué
      */
-    destinations.forEach(dest => {
-        const card = document.createElement('div');
-        card.className = `glass-card destination-card ${dest.class}`;
-        
-        // Structure initiale avec skeleton
-        card.innerHTML = `
-            <div class="destination-img skeleton"></div>
-            <div class="dest-content">
-                <h3>${dest.title}</h3>
-                <p>${dest.location}</p>
-            </div>
-        `;
+destinations.forEach(dest => {
+    const card = document.createElement('div');
+    card.className = `glass-card destination-card ${dest.class}`;
 
-        const destImg = card.querySelector('.destination-img');
-        const imgUrl = dest.image || DEFAULT_DEST_IMAGE;
+    const imgUrl = dest.image;
 
-        // Chargement asynchrone de l'image pour gérer le skeleton
-        const tempImg = new Image();
-        tempImg.src = imgUrl;
-        tempImg.onload = () => {
-            destImg.style.backgroundImage = `url('${imgUrl}')`;
-            destImg.classList.remove('skeleton');
-        };
-        tempImg.onerror = () => {
-            destImg.style.backgroundImage = `url('${DEFAULT_DEST_IMAGE}')`;
-            destImg.classList.remove('skeleton');
-        };
-        
-        destinationsGrid.appendChild(card);
-        cardObserver.observe(card);
-    });
+    card.innerHTML = `
+        <div class="destination-img skeleton">
+            <img
+                class="destination-photo"
+                src="${imgUrl}"
+                alt="${dest.title} — ${dest.location}"
+                loading="lazy"
+                decoding="async"
+            >
+        </div>
+        <div class="dest-content">
+            <h3>${dest.title}</h3>
+            <p>${dest.location}</p>
+        </div>
+    `;
+
+    const destImg = card.querySelector('.destination-img');
+    const destinationPhoto = card.querySelector('.destination-photo');
+
+    destinationPhoto.addEventListener('load', () => {
+        destImg.classList.remove('skeleton');
+    }, { once: true });
+
+    destinationPhoto.addEventListener('error', () => {
+        destinationPhoto.hidden = true;
+        destImg.classList.remove('skeleton');
+    }, { once: true });
+
+    destinationsGrid.appendChild(card);
+    cardObserver.observe(card);
+});
+
 
     // ------------------------------------------------------------------
     // Formulaire B2B unique "Request a DMC Proposal" (Objectif 65)
@@ -338,9 +342,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const failedResult = tatBookerSucceeded ? supabaseResult : tatBookerResult;
                     console.error('[DMC Form] Partial submission failure:', failedResult.reason);
                     showFeedback(translate(
-                        'Your request was only partially sent. One destination received it; the other failed. Please contact contact@tambo.be before resubmitting to avoid duplicates.',
-                        'Votre demande n’a été transmise qu’en partie. Une destination l’a reçue, l’autre a échoué. Contactez contact@tambo.be avant de la renvoyer pour éviter les doublons.',
-                        'Uw aanvraag is maar gedeeltelijk verzonden. Eén bestemming heeft deze ontvangen; de andere verzending is mislukt. Neem contact op via contact@tambo.be voordat u opnieuw verzendt om duplicaten te voorkomen.'
+                        'We encountered an issue processing your request. Please contact contact@tambo.be so we can confirm receipt.',
+                        'Un problème est survenu lors du traitement de votre demande. Contactez contact@tambo.be afin que nous puissions confirmer sa bonne réception.',
+                        'Er is een probleem opgetreden bij de verwerking van uw aanvraag. Neem contact op via contact@tambo.be zodat we de ontvangst kunnen bevestigen.'
                     ), 'warning');
                 } else {
                     console.error('[DMC Form] Both submission destinations failed:', {

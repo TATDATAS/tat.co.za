@@ -110,8 +110,8 @@
                 <h3>NOS PARTENAIRES</h3>
                 <div class="subcard-divider"></div>
                 <p class="subcard-copy">Des professionnels du voyage de confiance et des spécialistes collaborant à des voyages sur mesure en Afrique du Sud.</p>
-
-                <div class="icon-grid">
+                <div class="subcard-content" id="dmc-profiles-grid" hidden>
+                    <div class="icon-grid">
                     <div class="icon-card">
                         <img src="assets/icons/travel-agencies.svg" alt="Agences de voyage">
                         <span class="label">Agences de voyage</span>
@@ -141,6 +141,7 @@
                         <img src="assets/icons/corporate & incentive specialists.svg" alt="Entreprises & Incentive">
                         <span class="label">Entreprises & Incentive</span>
                     </div>
+                    </div>
                 </div>
             </div>
 
@@ -148,8 +149,8 @@
                 <h3>NOS PRESTATIONS</h3>
                 <div class="subcard-divider"></div>
                 <p class="subcard-copy">Des services de destination de bout en bout, de la conception de l'itinéraire aux opérations sur le terrain.</p>
-
-                <div class="icon-grid">
+                <div class="subcard-content" id="dmc-services-grid" hidden>
+                    <div class="icon-grid">
                     <div class="icon-card"><img src="assets/icons/itinerary-dsign.svg" alt="Conception d'itinéraire"><span class="label">Conception d'itinéraire</span></div>
                     <div class="icon-card"><img src="assets/icons/accomodation-sourcing.svg" alt="Hébergement"><span class="label">Hébergement</span></div>
                     <div class="icon-card"><img src="assets/icons/safari-arrangements.svg" alt="Organisation de safaris"><span class="label">Organisation de safaris</span></div>
@@ -160,6 +161,7 @@
                     <div class="icon-card"><img src="assets/icons/supplier-coordination.svg" alt="Coordination des fournisseurs"><span class="label">Coordination des fournisseurs</span></div>
                     <div class="icon-card"><img src="assets/icons/ground.svg" alt="Assistance au sol"><span class="label">Assistance au sol</span></div>
                     <div class="icon-card"><img src="assets/icons/Local-assistance.svg" alt="Assistance locale"><span class="label">Assistance locale</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -176,14 +178,16 @@
                     <span class="subcard-line">Nous accompagnons le voyage sur le terrain</span>
                     <span class="subcard-detail">Assistance locale fiable avant et pendant le voyage.</span>
                 </p>
-
-                <div class="icon-grid">
+                <div class="subcard-content" id="dmc-support-grid" hidden>
+                    <div class="icon-grid">
                     <div class="icon-card"><img src="assets/icons/process.svg" alt="Processus"><span class="label">Collaboration claire</span></div>
                     <div class="icon-card"><img src="assets/icons/support.svg" alt="Assistance"><span class="label">Coordination avant le départ</span></div>
                     <div class="icon-card"><img src="assets/icons/operations.svg" alt="Opérations"><span class="label">Opérations sur le terrain</span></div>
+                    </div>
                 </div>
             </div>
         </div>
+        <button class="subcards-toggle" type="button" aria-expanded="false" aria-controls="dmc-profiles-grid dmc-services-grid dmc-support-grid" aria-label="Afficher les trois grilles d'icônes" data-label-collapsed="Afficher les trois grilles d'icônes" data-label-expanded="Masquer les trois grilles d'icônes"></button>
 
     </section>
 
@@ -392,6 +396,7 @@
 <script type="module" src="./js/weather-simulator.js"></script>
 <script type="module" src="./js/utils.js"></script>
 <script type="module" src="./js/consent-manager.js"></script>
+<script type="module" src="./js/subcards-accordion.js"></script>
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>

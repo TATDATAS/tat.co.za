@@ -4,11 +4,6 @@
     box-sizing: border-box;
 }
 
-@keyframes kenburns-bg {
-    0% { background-size: 100% 100%; }
-    100% { background-size: 115% 115%; }
-}
-
 body {
     font-family: 'Inter', sans-serif;
     min-height: 100vh;

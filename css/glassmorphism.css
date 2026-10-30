@@ -234,7 +234,6 @@
     flex-direction: column;
 }
 
-/* Titres des sous-cartes */
 .subcard h3 {
     font-size: 1.15rem;
     margin: 0 0 0.35rem;
@@ -243,11 +242,52 @@
     color: #F1BF73;
 }
 
+.subcards-toggle {
+    grid-column: 1 / -1;
+    justify-self: center;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.25rem;
+    margin: -0.35rem 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #F1BF73;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.subcards-toggle::before {
+    content: "";
+    width: 0.6rem;
+    height: 0.6rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-0.15rem) rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.subcards-toggle[aria-expanded="true"]::before {
+    transform: translateY(0.15rem) rotate(225deg);
+}
+
+.subcards-toggle:hover {
+    background: rgba(255, 215, 150, 0.1);
+}
+
+.subcards-toggle:focus-visible {
+    outline: 2px solid #F1BF73;
+    outline-offset: 2px;
+}
+
 .subcard-divider {
     width: 100%;
     height: 1px;
     background: rgba(255, 215, 150, 0.2);
     margin: 0 0 0.7rem;
+    flex: 0 0 auto;
 }
 
 .subcard-copy {
@@ -255,6 +295,10 @@
     font-size: 0.72rem;
     line-height: 1.8;
     color: rgba(248, 230, 195, 0.8);
+}
+
+.subcard-content {
+    margin-bottom: 0.9rem;
 }
 
 .subcard-line {
@@ -288,6 +332,13 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.8rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .subcards-toggle,
+    .subcards-toggle::before {
+        transition: none;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -460,11 +511,20 @@ hr {
     background-repeat: no-repeat;
     /* Image de secours par défaut si l'image dynamique est introuvable */
     background-color: rgba(255, 255, 255, 0.05);
-    background-image: url('../assets/images/fallback-safari.jpg');
     z-index: 0;
     transform: scale(1.04);
     border-radius: 2rem;
 }
+
+.destination-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: inherit;
+}
+
 
 /* Animation Skeleton Screen */
 @keyframes shimmer {

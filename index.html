@@ -109,8 +109,8 @@
                 <h3>WHO WE WORK WITH</h3>
                 <div class="subcard-divider"></div>
                 <p class="subcard-copy">Trusted travel professionals and specialists collaborating on bespoke journeys in South Africa.</p>
-
-                <div class="icon-grid">
+                <div class="subcard-content" id="dmc-profiles-grid" hidden>
+                    <div class="icon-grid">
                     <div class="icon-card">
                         <img src="assets/icons/travel-agencies.svg" alt="Travel Agencies">
                         <span class="label">Travel Agencies</span>
@@ -140,6 +140,7 @@
                         <img src="assets/icons/corporate & incentive specialists.svg" alt="Corporate & Incentive">
                         <span class="label">Corporate & Incentive</span>
                     </div>
+                    </div>
                 </div>
             </div>
 
@@ -147,8 +148,8 @@
                 <h3>WHAT WE HANDLE</h3>
                 <div class="subcard-divider"></div>
                 <p class="subcard-copy">End-to-end destination services, from itinerary design to on-the-ground operations.</p>
-
-                <div class="icon-grid">
+                <div class="subcard-content" id="dmc-services-grid" hidden>
+                    <div class="icon-grid">
                     <div class="icon-card"><img src="assets/icons/itinerary-dsign.svg" alt="Itinerary Design"><span class="label">Itinerary Design</span></div>
                     <div class="icon-card"><img src="assets/icons/accomodation-sourcing.svg" alt="Accommodation"><span class="label">Accommodation</span></div>
                     <div class="icon-card"><img src="assets/icons/safari-arrangements.svg" alt="Safari Arrangements"><span class="label">Safari Arrangements</span></div>
@@ -159,6 +160,7 @@
                     <div class="icon-card"><img src="assets/icons/supplier-coordination.svg" alt="Supplier Coordination"><span class="label">Supplier Coordination</span></div>
                     <div class="icon-card"><img src="assets/icons/ground.svg" alt="Ground Handling"><span class="label">Ground Handling</span></div>
                     <div class="icon-card"><img src="assets/icons/Local-assistance.svg" alt="Local Assistance"><span class="label">Local Assistance</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -175,14 +177,16 @@
                     <span class="subcard-line">We support the journey on the ground</span>
                     <span class="subcard-detail">Reliable local assistance before and during the trip.</span>
                 </p>
-
-                <div class="icon-grid">
+                <div class="subcard-content" id="dmc-support-grid" hidden>
+                    <div class="icon-grid">
                     <div class="icon-card"><img src="assets/icons/process.svg" alt="Process"><span class="label">Clear collaboration</span></div>
                     <div class="icon-card"><img src="assets/icons/support.svg" alt="Support"><span class="label">Pre-trip coordination</span></div>
                     <div class="icon-card"><img src="assets/icons/operations.svg" alt="Operations"><span class="label">On the ground operations</span></div>
+                    </div>
                 </div>
             </div>
         </div>
+        <button class="subcards-toggle" type="button" aria-expanded="false" aria-controls="dmc-profiles-grid dmc-services-grid dmc-support-grid" aria-label="Show all icon grids" data-label-collapsed="Show all icon grids" data-label-expanded="Hide all icon grids"></button>
     
     </section>
 
@@ -391,6 +395,7 @@
 <script type="module" src="./js/weather-simulator.js"></script>
 <script type="module" src="./js/utils.js"></script>
 <script type="module" src="./js/consent-manager.js"></script>
+<script type="module" src="./js/subcards-accordion.js"></script>
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>
